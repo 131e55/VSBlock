@@ -317,7 +317,22 @@ void GameScene::_rivalCPU()
         }
     }
 
-    this->_rivalBar->cpuTouchMoved(Point(nearestBallX, this->_rivalBar->getPosition().y));
+    // スピードを決めてその分だけ近づくようにする
+    auto dragSpeed = 8;
+    auto x = this->_rivalBar->getPosition().x;
+    if (x > nearestBallX) {
+        x -= dragSpeed;
+        if (x < nearestBallX) {
+            x = nearestBallX;
+        }
+    }
+    else if (x < nearestBallX) {
+        x += dragSpeed;
+        if (x > nearestBallX) {
+            x = nearestBallX;
+        }
+    }
+    this->_rivalBar->cpuTouchMoved(Point(x, this->_rivalBar->getPosition().y));
 }
 
 void GameScene::_transition()
