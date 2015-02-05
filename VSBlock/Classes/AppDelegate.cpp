@@ -31,6 +31,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) {
+        glview->setFrameSize(480, 640);
+        glview->setDesignResolutionSize(480, 640, ResolutionPolicy::NO_BORDER);
+    }
+
     // turn on display FPS
     director->setDisplayStats(true);
 
