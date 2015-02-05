@@ -29,13 +29,13 @@ Ball* Ball::create()
 
 void Ball::_setVelocity()
 {
-    this->_vx = (rand() % 400 + 1) / 100.0;
-    this->_vy = (rand() % 400 + 1) / 100.0;
+    this->vx = (rand() % 400 + 100) / 100.0;
+    this->vy = (rand() % 400 + 100) / 100.0;
     if (rand() % 2 == 0) {
-        this->_vx *= -1;
+        this->vx *= -1;
     }
     if (rand() % 2 == 0) {
-        this->_vy *= -1;
+        this->vy *= -1;
     }
 }
 
@@ -45,8 +45,8 @@ void Ball::update(float frame) {
 }
 
 void Ball::_move() {
-    auto x = this->getPosition().x + this->_vx;
-    auto y = this->getPosition().y + this->_vy;
+    auto x = this->getPosition().x + this->vx;
+    auto y = this->getPosition().y + this->vy;
     this->setPosition(x, y);
 }
 
@@ -58,35 +58,18 @@ void Ball::_detectCollisionWithWalls()
 
     if (x - r <= 0) { // left
         this->setPosition(r, this->getPosition().y);
-        this->_vx *= -1;
+        this->vx *= -1;
     }
     else if (x + r >= this->_screenSize.width) { // right
         this->setPosition(this->_screenSize.width - r, this->getPosition().y);
-        this->_vx *= -1;
+        this->vx *= -1;
     }
     else if (y - r <= 0) { // bottom
         this->setPosition(this->getPosition().x, r);
-        this->_vy *= -1;
+        this->vy *= -1;
     }
     else if(y + r >= this->_screenSize.height) { // top
         this->setPosition(this->getPosition().x, this->_screenSize.height - r);
-        this->_vy *= -1;
-    }
-}
-
-void Ball::detectCollisionWithBar(Rect bar)
-{
-    auto x = this->getPosition().x;
-    auto r = this->getContentSize().width / 2;
-
-    if (this->getBoundingBox().intersectsRect(bar)) {
-        if (this->_vy < 0) { // top
-            this->_vy *= -1;
-            this->setPosition(x, bar.getMaxY() + r);
-        }
-        else if (this->_vy > 0) { // bottom
-            this->_vy *= -1;
-            this->setPosition(x, bar.getMinY() - r);
-        }
+        this->vy *= -1;
     }
 }

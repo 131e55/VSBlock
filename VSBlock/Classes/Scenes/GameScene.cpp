@@ -128,12 +128,33 @@ void GameScene::_newBall()
 }
 
 void GameScene::update(float frame) {
-
     // 全ボールの衝突判定
     for (auto &ball : this->_balls) {
         // YOU Side
         if (ball->getPosition().y < this->_screenSize.height / 2) {
-            ball->detectCollisionWithBar(this->_youBar->getBoundingBox());
+            // バーとの衝突判定
+            {
+                auto barRect = this->_youBar->getBoundingBox();
+                auto x = ball->getPosition().x;
+                auto r = ball->getContentSize().width / 2;
+
+                if (ball->getBoundingBox().intersectsRect(barRect)) {
+                    if (ball->vy < 0) { // top
+                        ball->vy *= -1;
+                        ball->setPosition(x, barRect.getMaxY() + r);
+                    }
+                    else if (ball->vy > 0) { // bottom
+                        ball->vy *= -1;
+                        ball->setPosition(x, barRect.getMinY() - r);
+                    }
+                }
+            }
+
+            // 各ブロックとの衝突判定
+            for (auto &block : this->_youBlocks) {
+                if (!block->broken) {
+                }
+            }
         }
         // RIVAL Side
         else {
