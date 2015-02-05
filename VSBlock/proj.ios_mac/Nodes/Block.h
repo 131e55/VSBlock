@@ -15,6 +15,15 @@ class Block : public cocos2d::Sprite
 {
 public:
     static Block* create();
+
+    // ブロックダメージの初期化
+    void initialize();
+
+    void hit();
+
+private:
+    cocos2d::Texture2D* _damageTextures[3];
+    int _currentDamage;
 };
 
 #endif /* defined(__VSBlock__Block__) */

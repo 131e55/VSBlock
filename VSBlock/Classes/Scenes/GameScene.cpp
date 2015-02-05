@@ -58,7 +58,7 @@ void GameScene::_gameInitialize()
     // ライフゲージを初期化
     this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]));
 
-    // ブロックの位置を初期化
+    // ブロックを初期化
     {
         int index = 0;
         float width = this->_youBlocks[0]->getContentSize().width;
@@ -71,6 +71,7 @@ void GameScene::_gameInitialize()
                 width * (index % column) + offsetLeft,
                 height * (index / column) + offsetBottom
             );
+            block->initialize();
             index++;
         }
     }
