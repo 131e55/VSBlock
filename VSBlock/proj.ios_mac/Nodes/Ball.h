@@ -15,6 +15,14 @@ class Ball : public cocos2d::Sprite
 {
 public:
     static Ball* create();
+
+    void update(float frame);
+
+private:
+    float _vx;
+    float _vy;
+
+    void _setVelocity();
 };
 
 #endif /* defined(__VSBlock__Ball__) */

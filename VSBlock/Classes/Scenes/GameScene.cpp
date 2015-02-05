@@ -4,7 +4,6 @@
 
 #include "GameScene.h"
 #include "TitleScene.h"
-#include "Ball.h"
 
 USING_NS_CC;
 
@@ -32,6 +31,8 @@ bool GameScene::init()
     {
         return false;
     }
+
+    this->_screenSize = Director::getInstance()->getVisibleSize();
 
     // READY? ラベル
     this->_ready = Sprite::create("Ready.png");
@@ -65,12 +66,10 @@ bool GameScene::init()
  */
 void GameScene::_initialize()
 {
-    Size screenSize = Director::getInstance()->getVisibleSize();
-
     // Ready? の初期化
     this->_ready->setPosition(
-        screenSize.width / 2,
-        screenSize.height + this->_ready->getContentSize().height
+        this->_screenSize.width / 2,
+        this->_screenSize.height + this->_ready->getContentSize().height
     );
 
     // ライフゲージを初期化
@@ -82,7 +81,7 @@ void GameScene::_initialize()
         float width = this->_youBlocks[0]->getContentSize().width;
         float height = this->_youBlocks[0]->getContentSize().height;
         const int column = 16;
-        float offsetLeft = (screenSize.width - width * column + width) / 2;
+        float offsetLeft = (this->_screenSize.width - width * column + width) / 2;
         float offsetBottom = 64;
         for (auto &block : this->_youBlocks) {
             block->initialize();
@@ -96,16 +95,38 @@ void GameScene::_initialize()
 
     // バーを初期化
     this->_youBar->initialize();
-    this->_youBar->setPosition(screenSize.width / 2, 160);
+    this->_youBar->setPosition(this->_screenSize.width / 2, 160);
 }
+
 
 void GameScene::_start()
 {
-    Size screenSize = Director::getInstance()->getVisibleSize();
-    auto moveto = EaseBounceOut::create(MoveTo::create(1.5f, Point(screenSize.width / 2, screenSize.height / 2)));
+    auto moveto = EaseBounceOut::create(MoveTo::create(
+        1.5f,
+        Point(this->_screenSize.width / 2, this->_screenSize.height / 2))
+    );
     auto fadeto = FadeTo::create(0.5f, 0);
-    auto startAction = Sequence::create(moveto, fadeto, NULL);
+    auto startAction = Sequence::create(
+        moveto,
+        fadeto,
+        CallFunc::create([this](){
+            this->_newBall();
+            this->scheduleUpdate();
+        }),
+        NULL
+    );
     this->_ready->runAction(startAction);
+}
+
+void GameScene::_newBall()
+{
+    auto ball = Ball::create();
+    ball->setPosition(this->_screenSize.width / 2, this->_screenSize.height / 2);
+    this->addChild(ball);
+    this->_balls.push_back(ball);
+}
+
+void GameScene::update(float frame) {
 }
 
 void GameScene::_transition()

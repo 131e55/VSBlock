@@ -9,7 +9,7 @@
 #include "LifeGauge.h"
 #include "Block.h"
 #include "Bar.h"
-
+#include "Ball.h"
 
 class GameScene : public cocos2d::Layer
 {
@@ -23,17 +23,25 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
 
+    // Main loop
+    void update(float frame);
+
 private:
+    cocos2d::Size _screenSize;
     cocos2d::Sprite* _ready;
     LifeGauge* _youLifeGauge;
     Block* _youBlocks[48];
     Bar* _youBar;
+    std::vector<Ball*> _balls;
 
     // ゲームの初期化
     void _initialize();
 
     // ゲームスタート
     void _start();
+
+    // 新しいボールの生成
+    void _newBall();
 
     void _transition();
 };
