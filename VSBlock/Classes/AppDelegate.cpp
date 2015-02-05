@@ -48,6 +48,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(scene);
 
+    // set seed
+    srand((unsigned int)time(NULL));
+
     return true;
 }
 
