@@ -33,10 +33,39 @@ bool GameScene::init()
         return false;
     }
 
-    auto block = Block::create();
-    this->addChild(block);
+    for (auto &block : this->_myBlocks) {
+        block = Block::create();
+        this->addChild(block);
+    }
+
+    this->_gameInitialize();
 
     return true;
+}
+
+/*
+ * ゲーム初期化
+ */
+void GameScene::_gameInitialize()
+{
+    Size screenSize = Director::getInstance()->getVisibleSize();
+
+    // ブロックの位置を初期化
+    {
+        int index = 0;
+        float width = this->_myBlocks[0]->getContentSize().width;
+        float height = this->_myBlocks[0]->getContentSize().height;
+        const int column = 16;
+        float offsetLeft = (screenSize.width / 2) - (width * column / 2);
+        float offsetBottom = 100;
+        for (auto &block : this->_myBlocks) {
+            block->setPosition(
+                width * (index % column) + offsetLeft,
+                height * (index / column) + offsetBottom
+            );
+            index++;
+        }
+    }
 }
 
 void GameScene::_transition()

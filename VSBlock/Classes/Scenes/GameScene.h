@@ -20,6 +20,9 @@ public:
     CREATE_FUNC(GameScene);
 
 private:
+    cocos2d::Sprite* _myBlocks[48];
+
+    void _gameInitialize();
     void _transition();
 };
 
