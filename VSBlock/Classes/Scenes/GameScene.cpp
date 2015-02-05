@@ -4,6 +4,7 @@
 
 #include "GameScene.h"
 #include "TitleScene.h"
+#include "Ball.h"
 
 USING_NS_CC;
 
