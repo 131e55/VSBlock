@@ -20,7 +20,7 @@ LifeGauge* LifeGauge::create(bool youSide)
         Size screenSize = Director::getInstance()->getVisibleSize();
         float space = 8;
 
-        auto label = youSide ? Sprite::create("YouLabel.png") : Sprite::create("RivalLabel.png");
+        auto label = youSide ? Sprite::create("You.png") : Sprite::create("Rival.png");
         {
             float width = label->getContentSize().width;
             float height = label->getContentSize().height;
