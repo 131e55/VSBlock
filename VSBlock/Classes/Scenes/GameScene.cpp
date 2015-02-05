@@ -3,6 +3,7 @@
 *******************************************************************************/
 
 #include "GameScene.h"
+#include "Block.h"
 #include "TitleScene.h"
 
 USING_NS_CC;
@@ -31,6 +32,9 @@ bool GameScene::init()
     {
         return false;
     }
+
+    auto block = Block::create();
+    this->addChild(block);
 
     return true;
 }
