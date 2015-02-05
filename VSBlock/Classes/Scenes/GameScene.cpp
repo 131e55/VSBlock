@@ -83,7 +83,7 @@ void GameScene::_gameInitialize()
 
     // バーを初期化
     this->_youBar->initialize();
-    this->_youBar->setPosition(screenSize.width / 2, 240);
+    this->_youBar->setPosition(screenSize.width / 2, 160);
 }
 
 void GameScene::_transition()
