@@ -54,8 +54,24 @@ bool Bar::onTouchBegan(Touch *touch, Event *event)
 
 void Bar::onTouchMoved(Touch *touch, Event *event)
 {
-    Size screenSize = Director::getInstance()->getVisibleSize();
     auto p = touch->getLocation();
+    this->touchMoved(p);
+
+}
+
+void Bar::cpuTouchBegan(Point p)
+{
+    this->_touchBeganPoint = p;
+}
+
+void Bar::cpuTouchMoved(Point p)
+{
+    this->touchMoved(p);
+}
+
+void Bar::touchMoved(Point p)
+{
+    Size screenSize = Director::getInstance()->getVisibleSize();
     auto x = this->getPosition().x;
     auto y = this->getPosition().y;
     auto r = this->getContentSize().width / 2;
@@ -72,6 +88,3 @@ void Bar::onTouchMoved(Touch *touch, Event *event)
     }
     this->setPosition(x + dx, y);
 }
-
-
-

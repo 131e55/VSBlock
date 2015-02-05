@@ -57,6 +57,10 @@ private:
     // ボールとブロックとの衝突判定
     bool _detectCollisionBallAndBlocks(Ball *ball, bool youSide);
 
+    // Rival CPU
+    void _rivalCPU();
+
+    // シーン遷移
     void _transition();
 };
 

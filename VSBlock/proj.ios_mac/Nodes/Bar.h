@@ -19,10 +19,16 @@ public:
     // バーダメージの初期化
     void initialize();
 
-    void hit();
-
+    // プレイヤー用タッチイベントハンドラ
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
+
+    // RIVAL用擬似タッチイベントハンドラ
+    void cpuTouchBegan(cocos2d::Point p);
+    void cpuTouchMoved(cocos2d::Point p);
+
+    // プレイヤー, RIVAL共通の処理
+    void touchMoved(cocos2d::Point p);
 
 private:
     cocos2d::Texture2D* _damageTextures[1];

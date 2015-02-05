@@ -129,6 +129,8 @@ void GameScene::_initialize()
     // バーを初期化
     this->_rivalBar->initialize();
     this->_rivalBar->setPosition(this->_screenSize.width / 2, this->_screenSize.height - 160);
+    // タッチ開始位置はバーの位置とする
+    this->_rivalBar->cpuTouchBegan(this->_rivalBar->getPosition());
 
     // ボールの出現数を初期化
     this->_nextBallNumber = 3;
@@ -222,6 +224,9 @@ void GameScene::update(float frame) {
             }
         }
     }
+
+    // Rival CPU
+    this->_rivalCPU();
 }
 
 // ボールとバーの衝突判定処理
@@ -287,6 +292,32 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
         }
     }
     return false;
+}
+
+void GameScene::_rivalCPU()
+{
+    //
+    // ポリシー：バーに一番近いボールのx座標へバーを移動させる
+    //
+
+    // 視野の境界
+    auto startY = this->_rivalBar->getPosition().y - this->_rivalBar->getContentSize().height / 2 - 64;
+    auto endY = this->_rivalBar->getPosition().y - this->_rivalBar->getContentSize().height / 2;
+    float nearestBallY = startY;
+    float nearestBallX = this->_screenSize.width / 2;
+
+    for (auto &ball : this->_balls) {
+        // 視野に入っているボールの中から一番近いものを探す
+        auto ballY = ball->getPosition().y;
+        if (startY <= ballY && ballY < endY) {
+            if (ballY > nearestBallY) {
+                nearestBallY = ballY;
+                nearestBallX = ball->getPosition().x;
+            }
+        }
+    }
+
+    this->_rivalBar->cpuTouchMoved(Point(nearestBallX, this->_rivalBar->getPosition().y));
 }
 
 void GameScene::_transition()
