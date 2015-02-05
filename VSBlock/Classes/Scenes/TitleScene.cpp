@@ -59,9 +59,5 @@ void TitleScene::onTouchEnded(Touch *touch, Event *event)
 // Scene transition
 void TitleScene::_transition()
 {
-    TransitionCrossFade* transition = NULL;
-    float duration = 0.5f;
-
-    transition = TransitionCrossFade::create(duration, GameScene::createScene());
-    Director::getInstance()->replaceScene(transition);
+    Director::getInstance()->replaceScene(GameScene::createScene());
 }
