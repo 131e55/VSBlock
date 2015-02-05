@@ -24,8 +24,12 @@ LifeGauge* LifeGauge::create(bool youSide)
         {
             float width = label->getContentSize().width;
             float height = label->getContentSize().height;
+
             if (youSide) {
                 label->setPosition(width / 2 + space, height / 2 + space);
+            }
+            else {
+                label->setPosition(width / 2 + space, screenSize.height - height / 2 - space);
             }
             layer->addChild(label);
         }
@@ -34,6 +38,7 @@ LifeGauge* LifeGauge::create(bool youSide)
         {
             float x = label->getPosition().x + label->getContentSize().width / 2 + space;
             float y = label->getPosition().y;
+
             layer->_gauge->setPosition(x, y);
             layer->_gauge->setAnchorPoint(Point(0, 0.5));
             layer->addChild(layer->_gauge);

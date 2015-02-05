@@ -30,6 +30,7 @@ private:
     cocos2d::Size _screenSize;
     cocos2d::Sprite* _ready;
     LifeGauge* _youLifeGauge;
+    LifeGauge* _rivalLifeGauge;
     Block* _youBlocks[48];
     Bar* _youBar;
     std::vector<Ball*> _balls;

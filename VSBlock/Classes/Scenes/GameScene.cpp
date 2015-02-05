@@ -42,6 +42,10 @@ bool GameScene::init()
     this->_youLifeGauge = LifeGauge::create(true);
     this->addChild(this->_youLifeGauge);
 
+    // 相手側のライフゲージを生成
+    this->_rivalLifeGauge = LifeGauge::create(false);
+    this->addChild(this->_rivalLifeGauge);
+
     // 自分側のブロックを生成
     for (auto &block : this->_youBlocks) {
         block = Block::create();
@@ -73,7 +77,8 @@ void GameScene::_initialize()
     );
 
     // ライフゲージを初期化
-    this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]) * 3);
+    this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]) * this->_youBlocks[0]->life);
+    this->_rivalLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]) * this->_youBlocks[0]->life);
 
     // ブロックを初期化
     {
