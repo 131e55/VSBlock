@@ -34,10 +34,6 @@ bool GameScene::init()
 
     this->_screenSize = Director::getInstance()->getVisibleSize();
 
-    // READY? ラベル
-    this->_ready = Sprite::create("Ready.png");
-    this->addChild(this->_ready);
-
     // 自分側のライフゲージを生成
     this->_youLifeGauge = LifeGauge::create(true);
     this->addChild(this->_youLifeGauge);
@@ -65,6 +61,10 @@ bool GameScene::init()
     // 相手側のバーを生成
     this->_rivalBar = Bar::create(false);
     this->addChild(this->_rivalBar);
+
+    // READY? ラベル
+    this->_ready = Sprite::create("Ready.png");
+    this->addChild(this->_ready);
 
     // ゲーム初期化
     this->_initialize();
