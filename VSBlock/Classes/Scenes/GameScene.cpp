@@ -129,9 +129,16 @@ void GameScene::_newBall()
 
 void GameScene::update(float frame) {
 
-    // 全ボールに対してバーとの当たり判定を行う
+    // 全ボールの衝突判定
     for (auto &ball : this->_balls) {
-        ball->detectCollisionWithBar(this->_youBar->getBoundingBox());
+        // YOU Side
+        if (ball->getPosition().y < this->_screenSize.height / 2) {
+            ball->detectCollisionWithBar(this->_youBar->getBoundingBox());
+        }
+        // RIVAL Side
+        else {
+
+        }
     }
 }
 
