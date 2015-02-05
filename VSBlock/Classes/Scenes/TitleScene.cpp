@@ -36,6 +36,27 @@ bool TitleScene::init()
         return false;
     }
 
+    auto screenSize = Director::getInstance()->getVisibleSize();
+
+    // Background
+    auto background = Sprite::create("TitleBG.png");
+    background->setPosition(screenSize.width / 2, screenSize.height / 2);
+    this->addChild(background);
+
+    // Title
+    auto title = Sprite::create("Title.png");
+    title->setPosition(screenSize.width / 2, screenSize.height / 2);
+    this->addChild(title);
+
+    // Start
+    auto start = Sprite::create("Start.png");
+    start->setPosition(screenSize.width / 2, screenSize.height / 2 - start->getContentSize().height * 2);
+    auto fadeOut = FadeOut::create(0.5f);
+    auto fadeIn = FadeIn::create(0.5f);
+    auto sequence = Sequence::create(fadeOut, fadeIn, NULL);
+    start->runAction(RepeatForever::create(sequence));
+    this->addChild(start);
+
     // Touch Event Listener
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(TitleScene::onTouchBegan, this);
@@ -52,7 +73,7 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *event)
 
 void TitleScene::onTouchEnded(Touch *touch, Event *event)
 {
-    // (仮) 画面をクリックしたらGameSceneへ遷移する
+    // 画面をクリックしたらGameSceneへ遷移する
     this->_transition();
 }
 
