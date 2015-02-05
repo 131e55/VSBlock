@@ -21,6 +21,9 @@ public:
 
     void hit();
 
+    // ブロックが壊されているか
+    bool broken = false;
+
 private:
     cocos2d::Texture2D* _damageTextures[3];
     int _currentDamage;

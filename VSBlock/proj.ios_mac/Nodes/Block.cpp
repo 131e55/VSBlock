@@ -41,7 +41,8 @@ void Block::hit()
 {
     this->_currentDamage ++;
     if (this->_currentDamage >= sizeof(this->_damageTextures) / sizeof(this->_damageTextures[0])) {
-        this->_currentDamage = 0;
+        this->setOpacity(0);
+        this->broken = true;
     }
     this->setTexture(this->_damageTextures[this->_currentDamage]);
 }
