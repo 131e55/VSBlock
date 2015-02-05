@@ -33,7 +33,8 @@ bool GameScene::init()
         return false;
     }
 
-    for (auto &block : this->_myBlocks) {
+    // 自分側のブロックを生成
+    for (auto &block : this->_youBlocks) {
         block = Block::create();
         this->addChild(block);
     }
@@ -53,12 +54,12 @@ void GameScene::_gameInitialize()
     // ブロックの位置を初期化
     {
         int index = 0;
-        float width = this->_myBlocks[0]->getContentSize().width;
-        float height = this->_myBlocks[0]->getContentSize().height;
+        float width = this->_youBlocks[0]->getContentSize().width;
+        float height = this->_youBlocks[0]->getContentSize().height;
         const int column = 16;
         float offsetLeft = (screenSize.width / 2) - (width * column / 2);
         float offsetBottom = 100;
-        for (auto &block : this->_myBlocks) {
+        for (auto &block : this->_youBlocks) {
             block->setPosition(
                 width * (index % column) + offsetLeft,
                 height * (index / column) + offsetBottom
