@@ -3,7 +3,6 @@
 *******************************************************************************/
 
 #include "GameScene.h"
-#include "Block.h"
 #include "TitleScene.h"
 
 USING_NS_CC;

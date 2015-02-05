@@ -6,6 +6,7 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "Block.h"
 
 class GameScene : public cocos2d::Layer
 {
@@ -20,7 +21,8 @@ public:
     CREATE_FUNC(GameScene);
 
 private:
-    cocos2d::Sprite* _youBlocks[48];
+
+    Block* _youBlocks[48];
 
     void _gameInitialize();
     void _transition();
