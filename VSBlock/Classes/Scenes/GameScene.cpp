@@ -33,6 +33,10 @@ bool GameScene::init()
         return false;
     }
 
+    // READY? ラベル
+    this->_ready = Sprite::create("Ready.png");
+    this->addChild(this->_ready);
+
     // 自分側のライフゲージを生成
     this->_youLifeGauge = LifeGauge::create(true);
     this->addChild(this->_youLifeGauge);
@@ -48,7 +52,10 @@ bool GameScene::init()
     this->addChild(this->_youBar);
 
     // ゲーム初期化
-    this->_gameInitialize();
+    this->_initialize();
+
+    // ゲームスタート
+    this->_start();
 
     return true;
 }
@@ -56,9 +63,15 @@ bool GameScene::init()
 /*
  * ゲーム初期化
  */
-void GameScene::_gameInitialize()
+void GameScene::_initialize()
 {
     Size screenSize = Director::getInstance()->getVisibleSize();
+
+    // Ready? の初期化
+    this->_ready->setPosition(
+        screenSize.width / 2,
+        screenSize.height + this->_ready->getContentSize().height
+    );
 
     // ライフゲージを初期化
     this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]));
@@ -84,6 +97,15 @@ void GameScene::_gameInitialize()
     // バーを初期化
     this->_youBar->initialize();
     this->_youBar->setPosition(screenSize.width / 2, 160);
+}
+
+void GameScene::_start()
+{
+    Size screenSize = Director::getInstance()->getVisibleSize();
+    auto moveto = EaseBounceOut::create(MoveTo::create(1.5f, Point(screenSize.width / 2, screenSize.height / 2)));
+    auto fadeto = FadeTo::create(0.5f, 0);
+    auto startAction = Sequence::create(moveto, fadeto, NULL);
+    this->_ready->runAction(startAction);
 }
 
 void GameScene::_transition()

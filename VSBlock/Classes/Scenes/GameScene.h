@@ -24,11 +24,17 @@ public:
     CREATE_FUNC(GameScene);
 
 private:
+    cocos2d::Sprite* _ready;
     LifeGauge* _youLifeGauge;
     Block* _youBlocks[48];
     Bar* _youBar;
 
-    void _gameInitialize();
+    // ゲームの初期化
+    void _initialize();
+
+    // ゲームスタート
+    void _start();
+
     void _transition();
 };
 
