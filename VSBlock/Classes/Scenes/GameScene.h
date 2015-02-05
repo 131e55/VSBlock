@@ -8,6 +8,8 @@
 #include "cocos2d.h"
 #include "LifeGauge.h"
 #include "Block.h"
+#include "Bar.h"
+
 
 class GameScene : public cocos2d::Layer
 {
@@ -24,6 +26,7 @@ public:
 private:
     LifeGauge* _youLifeGauge;
     Block* _youBlocks[48];
+    Bar* _youBar;
 
     void _gameInitialize();
     void _transition();
