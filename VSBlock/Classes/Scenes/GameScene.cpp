@@ -52,6 +52,12 @@ bool GameScene::init()
         this->addChild(block);
     }
 
+    // 相手側のブロックを生成
+    for (auto &block : this->_rivalBlocks) {
+        block = Block::create();
+        this->addChild(block);
+    }
+
     // 自分側のバーを生成
     this->_youBar = Bar::create();
     this->addChild(this->_youBar);
@@ -87,12 +93,26 @@ void GameScene::_initialize()
         float height = this->_youBlocks[0]->getContentSize().height;
         const int column = 16;
         float offsetLeft = (this->_screenSize.width - width * column + width) / 2;
+
+        // 自分側
         float offsetBottom = 64;
         for (auto &block : this->_youBlocks) {
             block->initialize();
             block->setPosition(
                 width * (index % column) + offsetLeft,
                 height * (index / column) + offsetBottom
+            );
+            index++;
+        }
+
+        // 相手側
+        index = 0;
+        offsetBottom = this->_screenSize.height - 64;
+        for (auto &block : this->_rivalBlocks) {
+            block->initialize();
+            block->setPosition(
+                width * (index % column) + offsetLeft,
+                offsetBottom - height * (index / column)
             );
             index++;
         }

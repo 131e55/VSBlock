@@ -32,6 +32,7 @@ private:
     LifeGauge* _youLifeGauge;
     LifeGauge* _rivalLifeGauge;
     Block* _youBlocks[48];
+    Block* _rivalBlocks[48];
     Bar* _youBar;
     std::vector<Ball*> _balls;
     int _nextBallNumber;
