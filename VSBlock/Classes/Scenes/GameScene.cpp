@@ -101,6 +101,7 @@ void GameScene::_initialize()
 
 void GameScene::_start()
 {
+    // READY? ラベルをアニメーション表示させた後, ゲームスタート
     auto moveto = EaseBounceOut::create(MoveTo::create(
         1.5f,
         Point(this->_screenSize.width / 2, this->_screenSize.height / 2))
@@ -127,6 +128,11 @@ void GameScene::_newBall()
 }
 
 void GameScene::update(float frame) {
+
+    // 全ボールに対してバーとの当たり判定を行う
+    for (auto &ball : this->_balls) {
+        ball->detectCollisionWithBar(this->_youBar->getBoundingBox());
+    }
 }
 
 void GameScene::_transition()

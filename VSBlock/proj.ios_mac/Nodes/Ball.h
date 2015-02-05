@@ -18,6 +18,8 @@ public:
 
     void update(float frame);
 
+    void detectCollisionWithBar(cocos2d::Rect bar);
+
 private:
     cocos2d::Size _screenSize;
     float _vx;

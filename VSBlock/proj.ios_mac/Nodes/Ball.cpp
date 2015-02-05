@@ -52,8 +52,8 @@ void Ball::_move() {
 
 void Ball::_detectCollisionWithWalls()
 {
-    auto x = this->getPosition().x + this->_vx;
-    auto y = this->getPosition().y + this->_vy;
+    auto x = this->getPosition().x;
+    auto y = this->getPosition().y;
     auto r = this->getContentSize().width / 2;
 
     if (x - r <= 0) { // left
@@ -71,5 +71,22 @@ void Ball::_detectCollisionWithWalls()
     else if(y + r >= this->_screenSize.height) { // top
         this->setPosition(this->getPosition().x, this->_screenSize.height - r);
         this->_vy *= -1;
+    }
+}
+
+void Ball::detectCollisionWithBar(Rect bar)
+{
+    auto x = this->getPosition().x;
+    auto r = this->getContentSize().width / 2;
+
+    if (this->getBoundingBox().intersectsRect(bar)) {
+        if (this->_vy < 0) { // top
+            this->_vy *= -1;
+            this->setPosition(x, bar.getMaxY() + r);
+        }
+        else if (this->_vy > 0) { // bottom
+            this->_vy *= -1;
+            this->setPosition(x, bar.getMinY() - r);
+        }
     }
 }
