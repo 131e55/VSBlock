@@ -32,12 +32,17 @@ bool GameScene::init()
         return false;
     }
 
+    // 自分側のライフゲージを生成
+    this->_youLifeGauge = LifeGauge::create(true);
+    this->addChild(this->_youLifeGauge);
+
     // 自分側のブロックを生成
     for (auto &block : this->_youBlocks) {
         block = Block::create();
         this->addChild(block);
     }
 
+    // ゲーム初期化
     this->_gameInitialize();
 
     return true;
@@ -49,6 +54,9 @@ bool GameScene::init()
 void GameScene::_gameInitialize()
 {
     Size screenSize = Director::getInstance()->getVisibleSize();
+
+    // ライフゲージを初期化
+    this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]));
 
     // ブロックの位置を初期化
     {

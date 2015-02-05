@@ -6,6 +6,7 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "LifeGauge.h"
 #include "Block.h"
 
 class GameScene : public cocos2d::Layer
@@ -21,7 +22,7 @@ public:
     CREATE_FUNC(GameScene);
 
 private:
-
+    LifeGauge* _youLifeGauge;
     Block* _youBlocks[48];
 
     void _gameInitialize();
