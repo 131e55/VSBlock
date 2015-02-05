@@ -47,6 +47,8 @@ private:
     // 新しいボールの生成
     void _newBalls();
 
+    void _detectCollisionBallAndBar(Ball *ball, bool youSide);
+
     void _transition();
 };
 

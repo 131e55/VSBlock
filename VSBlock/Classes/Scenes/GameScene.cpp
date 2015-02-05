@@ -176,22 +176,7 @@ void GameScene::update(float frame) {
         // YOU Side
         if (ball->getPosition().y < this->_screenSize.height / 2) {
             // バーとの衝突判定
-            {
-                auto barRect = this->_youBar->getBoundingBox();
-                auto x = ball->getPosition().x;
-                auto r = ball->getContentSize().width / 2;
-
-                if (ball->getBoundingBox().intersectsRect(barRect)) {
-                    if (ball->vy < 0) { // top
-                        ball->vy *= -1;
-                        ball->setPosition(x, barRect.getMaxY() + r);
-                    }
-                    else if (ball->vy > 0) { // bottom
-                        ball->vy *= -1;
-                        ball->setPosition(x, barRect.getMinY() - r);
-                    }
-                }
-            }
+            this->_detectCollisionBallAndBar(ball, true);
 
             // 各ブロックとの衝突判定
             for (auto &block : this->_youBlocks) {
@@ -227,7 +212,26 @@ void GameScene::update(float frame) {
         }
         // RIVAL Side
         else {
+            // バーとの衝突判定
+            this->_detectCollisionBallAndBar(ball, false);
+        }
+    }
+}
 
+void GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
+{
+    auto barRect = youSide ? this->_youBar->getBoundingBox() : this->_rivalBar->getBoundingBox();
+    auto x = ball->getPosition().x;
+    auto r = ball->getContentSize().width / 2;
+
+    if (ball->getBoundingBox().intersectsRect(barRect)) {
+        if (ball->vy < 0) { // top
+            ball->vy *= -1;
+            ball->setPosition(x, barRect.getMaxY() + r);
+        }
+        else if (ball->vy > 0) { // bottom
+            ball->vy *= -1;
+            ball->setPosition(x, barRect.getMinY() - r);
         }
     }
 }
