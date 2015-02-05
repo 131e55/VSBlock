@@ -44,5 +44,7 @@ void Block::hit()
         this->setOpacity(0);
         this->broken = true;
     }
-    this->setTexture(this->_damageTextures[this->_currentDamage]);
+    else {
+        this->setTexture(this->_damageTextures[this->_currentDamage]);
+    }
 }

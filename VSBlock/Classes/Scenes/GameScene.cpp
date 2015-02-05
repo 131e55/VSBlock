@@ -73,7 +73,7 @@ void GameScene::_initialize()
     );
 
     // ライフゲージを初期化
-    this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]));
+    this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]) * 3);
 
     // ブロックを初期化
     {
@@ -96,6 +96,9 @@ void GameScene::_initialize()
     // バーを初期化
     this->_youBar->initialize();
     this->_youBar->setPosition(this->_screenSize.width / 2, 160);
+
+    // ボールの出現数を初期化
+    this->_nextBallNumber = 1;
 }
 
 
@@ -111,7 +114,7 @@ void GameScene::_start()
         moveto,
         fadeto,
         CallFunc::create([this](){
-            this->_newBall();
+            this->_newBalls();
             this->scheduleUpdate();
         }),
         NULL
@@ -119,16 +122,23 @@ void GameScene::_start()
     this->_ready->runAction(startAction);
 }
 
-void GameScene::_newBall()
+/*
+ * nextBallNumberの数になるまでボールを生成
+ */
+void GameScene::_newBalls()
 {
-    auto ball = Ball::create();
-    ball->setPosition(this->_screenSize.width / 2, this->_screenSize.height / 2);
-    this->addChild(ball);
-    this->_balls.push_back(ball);
+    auto num = this->_balls.size();
+    for (int i = 0; i < this->_nextBallNumber - (int)num; i ++) {
+        auto ball = Ball::create();
+        ball->setPosition(this->_screenSize.width / 2, this->_screenSize.height / 2);
+        this->addChild(ball);
+        this->_balls.push_back(ball);
+    }
 }
 
 void GameScene::update(float frame) {
     // 全ボールの衝突判定
+    bool ballForLoopBreak = false;
     for (auto &ball : this->_balls) {
         // YOU Side
         if (ball->getPosition().y < this->_screenSize.height / 2) {
@@ -153,7 +163,33 @@ void GameScene::update(float frame) {
             // 各ブロックとの衝突判定
             for (auto &block : this->_youBlocks) {
                 if (!block->broken) {
+                    auto blockRect = block->getBoundingBox();
+
+                    if (ball->getBoundingBox().intersectsRect(blockRect)) {
+                        // ブロックに当たり, ライフゲージを更新する
+                        block->hit();
+                        this->_youLifeGauge->damaged();
+
+                        // ボールを削除
+                        ball->removeFromParent();
+                        auto pos = std::find(this->_balls.begin(), this->_balls.end(), ball);
+                        this->_balls.erase(pos);
+
+                        // ボール出現数を増やしボールを生成
+                        this->_nextBallNumber++;
+                        if (this->_nextBallNumber > 100) {
+                            this->_nextBallNumber = 100;
+                        }
+                        this->_newBalls();
+
+                        ballForLoopBreak = true;
+                        break;
+                    }
                 }
+            }
+
+            if (ballForLoopBreak) {
+                break;
             }
         }
         // RIVAL Side

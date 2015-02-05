@@ -47,8 +47,16 @@ LifeGauge* LifeGauge::create(bool youSide)
     return nullptr;
 }
 
-void LifeGauge::initialize(int life)
+void LifeGauge::initialize(float life)
 {
+    this->_maxLife = life;
     this->_currentLife = life;
     this->_gauge->setScaleX(this->_gaugeMaxWidth);
+}
+
+void LifeGauge::damaged()
+{
+    this->_currentLife--;
+    auto per = this->_currentLife / this->_maxLife;
+    this->_gauge->setScaleX(this->_gaugeMaxWidth * per);
 }

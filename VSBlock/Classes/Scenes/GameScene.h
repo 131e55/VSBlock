@@ -33,6 +33,7 @@ private:
     Block* _youBlocks[48];
     Bar* _youBar;
     std::vector<Ball*> _balls;
+    int _nextBallNumber;
 
     // ゲームの初期化
     void _initialize();
@@ -41,7 +42,7 @@ private:
     void _start();
 
     // 新しいボールの生成
-    void _newBall();
+    void _newBalls();
 
     void _transition();
 };

@@ -17,11 +17,14 @@ public:
     static LifeGauge* create(bool youSide);
 
     // ライフゲージの初期化
-    void initialize(int life);
+    void initialize(float life);
+
+    void damaged();
 
 private:
     cocos2d::Sprite* _gauge;
     float _gaugeMaxWidth;
+    float _maxLife;
     float _currentLife;
 };
 
