@@ -48,15 +48,8 @@ void Bar::initialize()
 
 bool Bar::onTouchBegan(Touch *touch, Event *event)
 {
-    auto p = touch->getLocation();
-    auto rect = this->getBoundingBox();
-
-    if (rect.containsPoint(p)) {
-        this->_touchBeganPoint = p;
-        return true;
-    }
-
-    return false;
+    this->_touchBeganPoint = touch->getLocation();
+    return true;
 }
 
 void Bar::onTouchMoved(Touch *touch, Event *event)
