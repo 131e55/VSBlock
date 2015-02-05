@@ -133,7 +133,7 @@ void GameScene::_initialize()
     this->_rivalBar->cpuTouchBegan(this->_rivalBar->getPosition());
 
     // ボールの出現数を初期化
-    this->_nextBallNumber = 3;
+    this->_nextBallNumber = 5;
 }
 
 void GameScene::_start()
@@ -318,7 +318,7 @@ void GameScene::_rivalCPU()
     }
 
     // スピードを決めてその分だけ近づくようにする
-    auto dragSpeed = 10;
+    auto dragSpeed = 12;
     auto x = this->_rivalBar->getPosition().x;
     if (x > nearestBallX) {
         x -= dragSpeed;

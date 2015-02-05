@@ -29,8 +29,8 @@ Ball* Ball::create()
 
 void Ball::_setVelocity()
 {
-    this->vx = (rand() % 400 + 100) / 100.0;
-    this->vy = (rand() % 400 + 100) / 100.0;
+    this->vx = (rand() % 400 + 50) / 100.0;
+    this->vy = (rand() % 400 + 50) / 100.0;
     if (rand() % 2 == 0) {
         this->vx *= -1;
     }
