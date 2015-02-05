@@ -318,7 +318,7 @@ void GameScene::_rivalCPU()
     }
 
     // スピードを決めてその分だけ近づくようにする
-    auto dragSpeed = 8;
+    auto dragSpeed = 10;
     auto x = this->_rivalBar->getPosition().x;
     if (x > nearestBallX) {
         x -= dragSpeed;
