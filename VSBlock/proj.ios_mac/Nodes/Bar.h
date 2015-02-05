@@ -14,7 +14,7 @@
 class Bar : public cocos2d::Sprite
 {
 public:
-    static Bar* create();
+    static Bar* create(bool youSide);
 
     // バーダメージの初期化
     void initialize();

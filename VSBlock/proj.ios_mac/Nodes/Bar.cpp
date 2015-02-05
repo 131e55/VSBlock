@@ -11,7 +11,7 @@
 
 USING_NS_CC;
 
-Bar* Bar::create()
+Bar* Bar::create(bool youSide)
 {
     Bar *sprite = new Bar();
     if (sprite && sprite->initWithFile("Bar_0.png"))
@@ -27,10 +27,12 @@ Bar* Bar::create()
         }
 
         // Touch Event Listener
-        auto listener = EventListenerTouchOneByOne::create();
-        listener->onTouchBegan = CC_CALLBACK_2(Bar::onTouchBegan, sprite);
-        listener->onTouchMoved = CC_CALLBACK_2(Bar::onTouchMoved, sprite);
-        sprite->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, sprite);
+        if (youSide) {
+            auto listener = EventListenerTouchOneByOne::create();
+            listener->onTouchBegan = CC_CALLBACK_2(Bar::onTouchBegan, sprite);
+            listener->onTouchMoved = CC_CALLBACK_2(Bar::onTouchMoved, sprite);
+            sprite->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, sprite);
+        }
 
         return sprite;
     }

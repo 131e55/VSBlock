@@ -59,8 +59,12 @@ bool GameScene::init()
     }
 
     // 自分側のバーを生成
-    this->_youBar = Bar::create();
+    this->_youBar = Bar::create(true);
     this->addChild(this->_youBar);
+
+    // 相手側のバーを生成
+    this->_rivalBar = Bar::create(false);
+    this->addChild(this->_rivalBar);
 
     // ゲーム初期化
     this->_initialize();
@@ -121,6 +125,10 @@ void GameScene::_initialize()
     // バーを初期化
     this->_youBar->initialize();
     this->_youBar->setPosition(this->_screenSize.width / 2, 160);
+
+    // バーを初期化
+    this->_rivalBar->initialize();
+    this->_rivalBar->setPosition(this->_screenSize.width / 2, this->_screenSize.height - 160);
 
     // ボールの出現数を初期化
     this->_nextBallNumber = 1;

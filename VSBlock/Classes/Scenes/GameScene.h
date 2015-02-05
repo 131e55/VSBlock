@@ -34,6 +34,7 @@ private:
     Block* _youBlocks[48];
     Block* _rivalBlocks[48];
     Bar* _youBar;
+    Bar* _rivalBar;
     std::vector<Ball*> _balls;
     int _nextBallNumber;
 
