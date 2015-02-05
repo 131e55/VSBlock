@@ -131,7 +131,7 @@ void GameScene::_initialize()
     this->_rivalBar->setPosition(this->_screenSize.width / 2, this->_screenSize.height - 160);
 
     // ボールの出現数を初期化
-    this->_nextBallNumber = 1;
+    this->_nextBallNumber = 3;
 }
 
 
@@ -171,42 +171,14 @@ void GameScene::_newBalls()
 
 void GameScene::update(float frame) {
     // 全ボールの衝突判定
-    bool ballForLoopBreak = false;
     for (auto &ball : this->_balls) {
         // YOU Side
         if (ball->getPosition().y < this->_screenSize.height / 2) {
             // バーとの衝突判定
             this->_detectCollisionBallAndBar(ball, true);
 
-            // 各ブロックとの衝突判定
-            for (auto &block : this->_youBlocks) {
-                if (!block->broken) {
-                    auto blockRect = block->getBoundingBox();
-
-                    if (ball->getBoundingBox().intersectsRect(blockRect)) {
-                        // ブロックに当たり, ライフゲージを更新する
-                        block->hit();
-                        this->_youLifeGauge->damaged();
-
-                        // ボールを削除
-                        ball->removeFromParent();
-                        auto pos = std::find(this->_balls.begin(), this->_balls.end(), ball);
-                        this->_balls.erase(pos);
-
-                        // ボール出現数を増やしボールを生成
-                        this->_nextBallNumber++;
-                        if (this->_nextBallNumber > 100) {
-                            this->_nextBallNumber = 100;
-                        }
-                        this->_newBalls();
-
-                        ballForLoopBreak = true;
-                        break;
-                    }
-                }
-            }
-
-            if (ballForLoopBreak) {
+            // ブロックとの衝突判定
+            if (this->_detectCollisionBallAndBlocks(ball, true)) {
                 break;
             }
         }
@@ -214,6 +186,11 @@ void GameScene::update(float frame) {
         else {
             // バーとの衝突判定
             this->_detectCollisionBallAndBar(ball, false);
+
+            // ブロックとの衝突判定
+            if(this->_detectCollisionBallAndBlocks(ball, false)) {
+                break;
+            }
         }
     }
 }
@@ -234,6 +211,41 @@ void GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
             ball->setPosition(x, barRect.getMinY() - r);
         }
     }
+}
+
+bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
+{
+    for (auto &block : (youSide ? this->_youBlocks : this->_rivalBlocks)) {
+        if (!block->broken) {
+            auto blockRect = block->getBoundingBox();
+
+            if (ball->getBoundingBox().intersectsRect(blockRect)) {
+                // ブロックに傷を入れ, ライフゲージを更新する
+                block->hit();
+                if (youSide) {
+                    this->_youLifeGauge->damaged();
+                }
+                else {
+                    this->_rivalLifeGauge->damaged();
+                }
+
+                // ボールを削除
+                ball->removeFromParent();
+                auto pos = std::find(this->_balls.begin(), this->_balls.end(), ball);
+                this->_balls.erase(pos);
+
+                // ボール出現数を増やしボールを生成
+                this->_nextBallNumber++;
+                if (this->_nextBallNumber > 50) {
+                    this->_nextBallNumber = 50;
+                }
+                this->_newBalls();
+
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void GameScene::_transition()
