@@ -29,6 +29,7 @@ public:
 private:
     cocos2d::Size _screenSize;
     cocos2d::Sprite* _ready;
+
     LifeGauge* _youLifeGauge;
     LifeGauge* _rivalLifeGauge;
     Block* _youBlocks[48];
@@ -44,6 +45,9 @@ private:
     // ゲームスタート
     void _start();
 
+    // ゲームストップ
+    void _over(bool youWin);
+    
     // 新しいボールの生成
     void _newBalls();
 

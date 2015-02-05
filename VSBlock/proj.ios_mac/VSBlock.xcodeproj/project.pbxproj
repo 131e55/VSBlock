@@ -34,8 +34,6 @@
 		433DF2A71A8385E800BDF1B6 /* Bar_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2A51A8385E800BDF1B6 /* Bar_0.png */; };
 		433DF2AA1A83894F00BDF1B6 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 433DF2A81A83894F00BDF1B6 /* Ball.cpp */; };
 		433DF2AB1A83894F00BDF1B6 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 433DF2A81A83894F00BDF1B6 /* Ball.cpp */; };
-		433DF2B81A83953500BDF1B6 /* Fight.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2B41A83953500BDF1B6 /* Fight.png */; };
-		433DF2B91A83953500BDF1B6 /* Fight.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2B41A83953500BDF1B6 /* Fight.png */; };
 		433DF2BA1A83953500BDF1B6 /* Ready.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2B51A83953500BDF1B6 /* Ready.png */; };
 		433DF2BB1A83953500BDF1B6 /* Ready.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2B51A83953500BDF1B6 /* Ready.png */; };
 		433DF2BC1A83953500BDF1B6 /* Rival.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2B61A83953500BDF1B6 /* Rival.png */; };
@@ -46,6 +44,10 @@
 		433DF2C41A83959E00BDF1B6 /* Ball_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C11A83959E00BDF1B6 /* Ball_0.png */; };
 		433DF2C51A83959E00BDF1B6 /* Ball_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C21A83959E00BDF1B6 /* Ball_1.png */; };
 		433DF2C61A83959E00BDF1B6 /* Ball_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C21A83959E00BDF1B6 /* Ball_1.png */; };
+		433DF2C91A8406E400BDF1B6 /* Lose.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C71A8406E400BDF1B6 /* Lose.png */; };
+		433DF2CA1A8406E400BDF1B6 /* Lose.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C71A8406E400BDF1B6 /* Lose.png */; };
+		433DF2CB1A8406E400BDF1B6 /* Win.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C81A8406E400BDF1B6 /* Win.png */; };
+		433DF2CC1A8406E400BDF1B6 /* Win.png in Resources */ = {isa = PBXBuildFile; fileRef = 433DF2C81A8406E400BDF1B6 /* Win.png */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
@@ -145,12 +147,13 @@
 		433DF2A51A8385E800BDF1B6 /* Bar_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bar_0.png; sourceTree = "<group>"; };
 		433DF2A81A83894F00BDF1B6 /* Ball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ball.cpp; sourceTree = "<group>"; };
 		433DF2A91A83894F00BDF1B6 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
-		433DF2B41A83953500BDF1B6 /* Fight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fight.png; sourceTree = "<group>"; };
 		433DF2B51A83953500BDF1B6 /* Ready.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ready.png; sourceTree = "<group>"; };
 		433DF2B61A83953500BDF1B6 /* Rival.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Rival.png; sourceTree = "<group>"; };
 		433DF2B71A83953500BDF1B6 /* You.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = You.png; sourceTree = "<group>"; };
 		433DF2C11A83959E00BDF1B6 /* Ball_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball_0.png; sourceTree = "<group>"; };
 		433DF2C21A83959E00BDF1B6 /* Ball_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ball_1.png; sourceTree = "<group>"; };
+		433DF2C71A8406E400BDF1B6 /* Lose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lose.png; sourceTree = "<group>"; };
+		433DF2C81A8406E400BDF1B6 /* Win.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Win.png; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
@@ -355,10 +358,11 @@
 		433DF2B31A83953500BDF1B6 /* Label */ = {
 			isa = PBXGroup;
 			children = (
-				433DF2B41A83953500BDF1B6 /* Fight.png */,
 				433DF2B51A83953500BDF1B6 /* Ready.png */,
 				433DF2B61A83953500BDF1B6 /* Rival.png */,
 				433DF2B71A83953500BDF1B6 /* You.png */,
+				433DF2C71A8406E400BDF1B6 /* Lose.png */,
+				433DF2C81A8406E400BDF1B6 /* Win.png */,
 			);
 			path = Label;
 			sourceTree = "<group>";
@@ -556,6 +560,7 @@
 				433DF2A61A8385E800BDF1B6 /* Bar_0.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
+				433DF2C91A8406E400BDF1B6 /* Lose.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				433DF29E1A83785300BDF1B6 /* Block_2.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
@@ -566,10 +571,10 @@
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
+				433DF2CB1A8406E400BDF1B6 /* Win.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
 				433DF2891A83667D00BDF1B6 /* LifeGauge.png in Resources */,
-				433DF2B81A83953500BDF1B6 /* Fight.png in Resources */,
 				433DF2C51A83959E00BDF1B6 /* Ball_1.png in Resources */,
 				433DF2BC1A83953500BDF1B6 /* Rival.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
@@ -581,7 +586,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				433DF29D1A83785300BDF1B6 /* Block_1.png in Resources */,
-				433DF2B91A83953500BDF1B6 /* Fight.png in Resources */,
 				433DF2BF1A83953500BDF1B6 /* You.png in Resources */,
 				433DF2BB1A83953500BDF1B6 /* Ready.png in Resources */,
 				433DF28A1A83668900BDF1B6 /* LifeGauge.png in Resources */,
@@ -591,6 +595,8 @@
 				433DF2C61A83959E00BDF1B6 /* Ball_1.png in Resources */,
 				433DF2C41A83959E00BDF1B6 /* Ball_0.png in Resources */,
 				433DF29F1A83785300BDF1B6 /* Block_2.png in Resources */,
+				433DF2CA1A8406E400BDF1B6 /* Lose.png in Resources */,
+				433DF2CC1A8406E400BDF1B6 /* Win.png in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -134,12 +134,11 @@ void GameScene::_initialize()
     this->_nextBallNumber = 3;
 }
 
-
 void GameScene::_start()
 {
     // READY? ラベルをアニメーション表示させた後, ゲームスタート
     auto moveto = EaseBounceOut::create(MoveTo::create(
-        1.5f,
+        1.0f,
         Point(this->_screenSize.width / 2, this->_screenSize.height / 2))
     );
     auto fadeto = FadeTo::create(0.5f, 0);
@@ -154,6 +153,36 @@ void GameScene::_start()
     );
     this->_ready->runAction(startAction);
 }
+
+void GameScene::_over(bool youWin)
+{
+    // ボールやバーは動いていいが衝突判定だけは止める
+    this->unscheduleUpdate();
+
+    // リザルトラベルを表示してタイトルへ戻る
+    auto result = youWin ? Sprite::create("Win.png") : Sprite::create("Lose.png");
+    result->setPosition(
+        this->_screenSize.width / 2,
+        this->_screenSize.height + result->getContentSize().height
+    );
+    this->addChild(result);
+
+    auto moveto = EaseBounceOut::create(MoveTo::create(
+        1.0f,
+        Point(this->_screenSize.width / 2, this->_screenSize.height / 2))
+    );
+    auto fadeto = FadeTo::create(2.0f, 0);
+    auto overAction = Sequence::create(
+        moveto,
+        fadeto,
+        CallFunc::create([this](){
+            this->_transition();
+        }),
+        NULL
+    );
+    result->runAction(overAction);
+}
+
 
 /*
  * nextBallNumberの数になるまでボールを生成
@@ -195,6 +224,7 @@ void GameScene::update(float frame) {
     }
 }
 
+// ボールとバーの衝突判定処理
 void GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
 {
     auto barRect = youSide ? this->_youBar->getBoundingBox() : this->_rivalBar->getBoundingBox();
@@ -213,6 +243,7 @@ void GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
     }
 }
 
+// ボールとブロックの衝突判定処理
 bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
 {
     for (auto &block : (youSide ? this->_youBlocks : this->_rivalBlocks)) {
@@ -224,9 +255,19 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                 block->hit();
                 if (youSide) {
                     this->_youLifeGauge->damaged();
+
+                    // 負け
+                    if (this->_youLifeGauge->currentLife <= 0) {
+                        this->_over(false);
+                    }
                 }
                 else {
                     this->_rivalLifeGauge->damaged();
+
+                    // 勝ち
+                    if (this->_rivalLifeGauge->currentLife <= 0) {
+                        this->_over(true);
+                    }
                 }
 
                 // ボールを削除
@@ -250,9 +291,6 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
 
 void GameScene::_transition()
 {
-    TransitionCrossFade* transition = NULL;
-    float duration = 0.5f;
-
-    transition = TransitionCrossFade::create(duration, TitleScene::createScene());
+    TransitionCrossFade* transition = TransitionCrossFade::create(0.5f, TitleScene::createScene());
     Director::getInstance()->replaceScene(transition);
 }
