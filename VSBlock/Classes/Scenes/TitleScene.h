@@ -22,6 +22,12 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(TitleScene);
+
+    bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+    void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
+
+private:
+    void _transition();
 };
 
 #endif /* defined(__VSBlock__TitleScene__) */

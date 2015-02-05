@@ -7,6 +7,7 @@
 //
 
 #include "TitleScene.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 
@@ -35,5 +36,32 @@ bool TitleScene::init()
         return false;
     }
 
+    // Touch Event Listener
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = CC_CALLBACK_2(TitleScene::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(TitleScene::onTouchEnded, this);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
+}
+
+bool TitleScene::onTouchBegan(Touch *touch, Event *event)
+{
+    return true;
+}
+
+void TitleScene::onTouchEnded(Touch *touch, Event *event)
+{
+    // (仮) 画面をクリックしたらGameSceneへ遷移する
+    this->_transition();
+}
+
+// Scene transition
+void TitleScene::_transition()
+{
+    TransitionCrossFade* transition = NULL;
+    float duration = 0.5f;
+
+    transition = TransitionCrossFade::create(duration, GameScene::createScene());
+    Director::getInstance()->replaceScene(transition);
 }
