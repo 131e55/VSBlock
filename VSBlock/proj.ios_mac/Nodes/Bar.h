@@ -21,8 +21,12 @@ public:
 
     void hit();
 
+    bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+    void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
+
 private:
     cocos2d::Texture2D* _damageTextures[1];
     int _currentDamage;
+    cocos2d::Point _touchBeganPoint;
 };
 #endif /* defined(__VSBlock__Bar__) */

@@ -26,6 +26,12 @@ Bar* Bar::create()
             }
         }
 
+        // Touch Event Listener
+        auto listener = EventListenerTouchOneByOne::create();
+        listener->onTouchBegan = CC_CALLBACK_2(Bar::onTouchBegan, sprite);
+        listener->onTouchMoved = CC_CALLBACK_2(Bar::onTouchMoved, sprite);
+        sprite->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, sprite);
+
         return sprite;
     }
     CC_SAFE_DELETE(sprite);
@@ -37,3 +43,40 @@ void Bar::initialize()
     this->_currentDamage = 0;
     this->setTexture(this->_damageTextures[0]);
 }
+
+bool Bar::onTouchBegan(Touch *touch, Event *event)
+{
+    auto p = touch->getLocation();
+    auto rect = this->getBoundingBox();
+
+    if (rect.containsPoint(p)) {
+        this->_touchBeganPoint = p;
+        return true;
+    }
+
+    return false;
+}
+
+void Bar::onTouchMoved(Touch *touch, Event *event)
+{
+    Size screenSize = Director::getInstance()->getVisibleSize();
+    auto p = touch->getLocation();
+    auto x = this->getPosition().x;
+    auto y = this->getPosition().y;
+    auto r = this->getContentSize().width / 2;
+    auto dx = p.x - this->_touchBeganPoint.x;
+    this->_touchBeganPoint.x = p.x;
+
+    if (x + dx - r < 0) {
+        x = r;
+        dx = 0;
+    }
+    else if (x + dx + r > screenSize.width) {
+        x = screenSize.width - r;
+        dx = 0;
+    }
+    this->setPosition(x + dx, y);
+}
+
+
+
