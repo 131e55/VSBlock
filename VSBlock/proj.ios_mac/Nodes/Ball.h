@@ -19,10 +19,13 @@ public:
     void update(float frame);
 
 private:
+    cocos2d::Size _screenSize;
     float _vx;
     float _vy;
 
     void _setVelocity();
+    void _move();
+    void _detectCollisionWithWalls();
 };
 
 #endif /* defined(__VSBlock__Ball__) */

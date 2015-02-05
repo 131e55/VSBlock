@@ -17,6 +17,7 @@ Ball* Ball::create()
     {
         sprite->autorelease();
 
+        sprite->_screenSize = Director::getInstance()->getVisibleSize();
         sprite->_setVelocity();
         sprite->scheduleUpdate();
 
@@ -39,5 +40,36 @@ void Ball::_setVelocity()
 }
 
 void Ball::update(float frame) {
-    this->runAction(MoveBy::create(0, Vec2(this->_vx, this->_vy)));
+    this->_move();
+    this->_detectCollisionWithWalls();
+}
+
+void Ball::_move() {
+    auto x = this->getPosition().x + this->_vx;
+    auto y = this->getPosition().y + this->_vy;
+    this->setPosition(x, y);
+}
+
+void Ball::_detectCollisionWithWalls()
+{
+    auto x = this->getPosition().x + this->_vx;
+    auto y = this->getPosition().y + this->_vy;
+    auto r = this->getContentSize().width / 2;
+
+    if (x - r <= 0) { // left
+        this->setPosition(r, this->getPosition().y);
+        this->_vx *= -1;
+    }
+    else if (x + r >= this->_screenSize.width) { // right
+        this->setPosition(this->_screenSize.width - r, this->getPosition().y);
+        this->_vx *= -1;
+    }
+    else if (y - r <= 0) { // bottom
+        this->setPosition(this->getPosition().x, r);
+        this->_vy *= -1;
+    }
+    else if(y + r >= this->_screenSize.height) { // top
+        this->setPosition(this->getPosition().x, this->_screenSize.height - r);
+        this->_vy *= -1;
+    }
 }
