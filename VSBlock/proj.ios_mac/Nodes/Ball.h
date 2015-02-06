@@ -18,6 +18,7 @@ public:
 
     void update(float frame);
 
+    enum Type {White, Blue};
     float vx;
     float vy;
     int type;

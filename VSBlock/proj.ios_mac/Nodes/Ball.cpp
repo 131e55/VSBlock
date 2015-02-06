@@ -15,9 +15,9 @@ Ball* Ball::create()
     Ball *sprite = new Ball();
 
     // 大体白いボール。たまに青いボール。
-    sprite->type = 0;
+    sprite->type = White;
     if (rand() % 100 < 10) {
-        sprite->type = 1;
+        sprite->type = Blue;
     }
 
     if (sprite && sprite->initWithFile("Ball_" + std::to_string(sprite->type) + ".png"))
