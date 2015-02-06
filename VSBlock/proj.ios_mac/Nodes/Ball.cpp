@@ -13,7 +13,14 @@ USING_NS_CC;
 Ball* Ball::create()
 {
     Ball *sprite = new Ball();
-    if (sprite && sprite->initWithFile("Ball_0.png"))
+
+    // 大体白いボール。たまに青いボール。
+    sprite->type = 0;
+    if (rand() % 100 < 10) {
+        sprite->type = 1;
+    }
+
+    if (sprite && sprite->initWithFile("Ball_" + std::to_string(sprite->type) + ".png"))
     {
         sprite->autorelease();
 

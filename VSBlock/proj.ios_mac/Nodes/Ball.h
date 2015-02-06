@@ -20,6 +20,7 @@ public:
 
     float vx;
     float vy;
+    int type;
 
 private:
     cocos2d::Size _screenSize;
