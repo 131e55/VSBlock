@@ -313,9 +313,16 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                         }
                         break;
 
-                    // 青いボールなら, ブロックの傷を治し, ライフゲージを増やす
+                    // 青いボールなら, ブロックの傷を直し, ライフゲージを増やす
                     case Ball::Blue:
+                        block->fix();
 
+                        if (youSide) {
+
+                        }
+                        else {
+
+                        }
                         break;
                 }
 

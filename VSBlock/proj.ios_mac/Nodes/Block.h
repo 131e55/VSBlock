@@ -28,6 +28,9 @@ public:
     // ブロックへダメージを与える
     void hit();
 
+    // ブロックを直す
+    void fix();
+
 private:
     // バーのテクスチャ
     std::vector<cocos2d::Texture2D*> _textures;
