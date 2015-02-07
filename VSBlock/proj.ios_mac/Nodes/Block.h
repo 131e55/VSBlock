@@ -14,20 +14,25 @@
 class Block : public cocos2d::Sprite
 {
 public:
+    // ブロックのテクスチャ数
+    const int numTextures = 3;
+
+    // ブロックが壊れているか
+    bool broken = false;
+
     static Block* create();
 
-    // ブロックダメージの初期化
+    // ブロックのダメージの初期化
     void initialize();
 
+    // ブロックへダメージを与える
     void hit();
 
-    // ブロックのライフ
-    const int life = 3;
-
-    // ブロックが壊されているか
-    bool broken = false;
 private:
-    cocos2d::Texture2D* _damageTextures[3];
+    // バーのテクスチャ
+    std::vector<cocos2d::Texture2D*> _textures;
+
+    // 現在のダメージ数
     int _currentDamage;
 };
 

@@ -28,14 +28,24 @@ public:
 
 private:
     cocos2d::Size _screenSize;
+
+    // READY? ラベル
     cocos2d::Sprite* _ready;
 
+    // ライフゲージ
     LifeGauge* _youLifeGauge;
     LifeGauge* _rivalLifeGauge;
-    Block* _youBlocks[48];
-    Block* _rivalBlocks[48];
+
+    // ブロック
+    const int _numBlocks = 48;
+    std::vector<Block*> _youBlocks;
+    std::vector<Block*> _rivalBlocks;
+
+    // バー
     Bar* _youBar;
     Bar* _rivalBar;
+
+    // ボール
     std::vector<Ball*> _balls;
     int _nextBallNumber;
 

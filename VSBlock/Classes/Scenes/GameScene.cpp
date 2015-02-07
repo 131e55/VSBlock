@@ -43,14 +43,16 @@ bool GameScene::init()
     this->addChild(this->_rivalLifeGauge);
 
     // 自分側のブロックを生成
-    for (auto &block : this->_youBlocks) {
-        block = Block::create();
+    for (int i = 0; i < this->_numBlocks; i ++) {
+        auto block = Block::create();
+        this->_youBlocks.push_back(block);
         this->addChild(block);
     }
 
     // 相手側のブロックを生成
-    for (auto &block : this->_rivalBlocks) {
-        block = Block::create();
+    for (int i = 0; i < this->_numBlocks; i ++) {
+        auto block = Block::create();
+        this->_rivalBlocks.push_back(block);
         this->addChild(block);
     }
 
@@ -87,8 +89,8 @@ void GameScene::_initialize()
     );
 
     // ライフゲージを初期化
-    this->_youLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]) * this->_youBlocks[0]->life);
-    this->_rivalLifeGauge->initialize(sizeof(this->_youBlocks) / sizeof(this->_youBlocks[0]) * this->_youBlocks[0]->life);
+    this->_youLifeGauge->initialize(this->_numBlocks * this->_youBlocks.at(0)->numTextures);
+    this->_rivalLifeGauge->initialize(this->_numBlocks * this->_rivalBlocks.at(0)->numTextures);
 
     // ブロックを初期化
     {
@@ -289,24 +291,34 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
             auto blockRect = block->getBoundingBox();
 
             if (ball->getBoundingBox().intersectsRect(blockRect)) {
-                // ブロックに傷を入れ, ライフゲージを更新する
-                block->hit();
-                if (youSide) {
-                    this->_youLifeGauge->damaged();
+                switch (ball->type) {
+                    // 白いボールなら, ブロックに傷を入れ, ライフゲージを減らす
+                    case Ball::White:
+                        block->hit();
+                        if (youSide) {
+                            this->_youLifeGauge->damaged();
 
-                    // 負け
-                    if (this->_youLifeGauge->currentLife <= 0) {
-                        this->_over(false);
-                    }
-                }
-                else {
-                    this->_rivalLifeGauge->damaged();
+                            // 負け
+                            if (this->_youLifeGauge->currentLife <= 0) {
+                                this->_over(false);
+                            }
+                        }
+                        else {
+                            this->_rivalLifeGauge->damaged();
 
-                    // 勝ち
-                    if (this->_rivalLifeGauge->currentLife <= 0) {
-                        this->_over(true);
-                    }
+                            // 勝ち
+                            if (this->_rivalLifeGauge->currentLife <= 0) {
+                                this->_over(true);
+                            }
+                        }
+                        break;
+
+                    // 青いボールなら, ブロックの傷を治し, ライフゲージを増やす
+                    case Ball::Blue:
+
+                        break;
                 }
+
 
                 // ボールを削除
                 ball->removeFromParent();
