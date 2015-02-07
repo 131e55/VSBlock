@@ -74,6 +74,10 @@ bool GameScene::init()
     // ゲームスタート
     this->_start();
 
+    // [デバッグ用] Rival が対象にしているボールへ付ける印
+    this->_lockon = Sprite::create("LockOn.png");
+    this->addChild(this->_lockon);
+
     return true;
 }
 
@@ -326,6 +330,12 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                                 this->_over(true);
                             }
                         }
+
+                        // ボール出現数を増やす
+                        this->_numNextBalls ++;
+                        if (this->_numNextBalls > 50) {
+                            this->_numNextBalls = 50;
+                        }
                         break;
                     }
 
@@ -340,6 +350,12 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                                 this->_rivalLifeGauge->increase();
                             }
                         }
+
+                        // ボール出現数を減らす
+                        this->_numNextBalls -= 5;
+                        if (this->_numNextBalls < 5) {
+                            this->_numNextBalls = 5;
+                        }
                         break;
                     }
 
@@ -352,11 +368,7 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                 auto pos = std::find(this->_balls.begin(), this->_balls.end(), ball);
                 this->_balls.erase(pos);
 
-                // ボール出現数を増やしボールを生成
-                this->_numNextBalls++;
-                if (this->_numNextBalls > 50) {
-                    this->_numNextBalls = 50;
-                }
+                // 新しいボールを生成
                 this->_newBalls();
 
                 return true;
@@ -394,10 +406,10 @@ void GameScene::_detectCollisionWalls(Ball *ball)
 void GameScene::_rivalCPU()
 {
     /*
-     * ポリシー
-     *    1. バーに一番近いボールのx座標を目的地にする
-     *    2. 白いボールなら目的地へ近づく
-     *    3. 青いボールなら目的地から遠ざかる
+     * Rival の戦略
+     *  1. 視野内で, バーに一番近く, ブロックへ向かっているボールのx座標に注目する
+     *    2-1. 白いボールならその位置へ近づく
+     *    2-2. 青いボールならその位置から遠ざかる
      */
 
     // 視野を決めて、視野以外のボールに対しては走査しないようにする
@@ -419,9 +431,10 @@ void GameScene::_rivalCPU()
 
     // 全ボール走査
     for (auto &ball : this->_balls) {
-        // 視野に入っているボールの中から一番近いものを探す
         auto ballY = ball->getPosition().y;
-        if (startY > ballY && ballY >= endY) {
+
+        // 1. 視野内で, バーに一番近く, ブロックへ向かっているボールを探す
+        if (ball->vy > 0 && startY > ballY && ballY >= endY) {
             if (ballY > nearestBallY) {
                 nearestBallY = ballY;
                 nearestBallX = ball->getPosition().x;
@@ -429,6 +442,9 @@ void GameScene::_rivalCPU()
             }
         }
     }
+
+    // [デバッグ用] Rival が対象にしているボールへ付ける印
+    this->_lockon->setPosition(nearestBallX, nearestBallY);
 
     switch (type) {
         // 白いボールなら目的地へ近づく

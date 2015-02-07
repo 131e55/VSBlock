@@ -79,6 +79,9 @@ private:
 
     // シーン遷移
     void _transition();
+
+    // [デバッグ用] Rival が対象にしているボールへ付ける印
+    cocos2d::Sprite* _lockon;
 };
 
 #endif /* defined(__GAME_SCENE_H__) */
