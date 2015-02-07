@@ -206,7 +206,11 @@ void GameScene::update(float frame) {
         // YOU Side
         if (ball->getPosition().y < this->_screenSize.height / 2) {
             // バーとの衝突判定
-            this->_detectCollisionBallAndBar(ball, true);
+            if (!this->_youBar->broken) {
+                if (this->_detectCollisionBallAndBar(ball, true)) {
+                    break;
+                }
+            }
 
             // ブロックとの衝突判定
             if (this->_detectCollisionBallAndBlocks(ball, true)) {
@@ -216,7 +220,11 @@ void GameScene::update(float frame) {
         // RIVAL Side
         else {
             // バーとの衝突判定
-            this->_detectCollisionBallAndBar(ball, false);
+            if (!this->_rivalBar->broken) {
+                if(this->_detectCollisionBallAndBar(ball, false)) {
+                    break;
+                }
+            }
 
             // ブロックとの衝突判定
             if(this->_detectCollisionBallAndBlocks(ball, false)) {
@@ -230,22 +238,47 @@ void GameScene::update(float frame) {
 }
 
 // ボールとバーの衝突判定処理
-void GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
+// 戻り値: 青いボールとバーが衝突したかどうか
+bool GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
 {
     auto barRect = youSide ? this->_youBar->getBoundingBox() : this->_rivalBar->getBoundingBox();
     auto x = ball->getPosition().x;
     auto r = ball->getContentSize().width / 2;
 
     if (ball->getBoundingBox().intersectsRect(barRect)) {
-        if (ball->vy < 0) { // top
-            ball->vy *= -1;
-            ball->setPosition(x, barRect.getMaxY() + r);
-        }
-        else if (ball->vy > 0) { // bottom
-            ball->vy *= -1;
-            ball->setPosition(x, barRect.getMinY() - r);
+        switch (ball->type) {
+            // 白いボールは跳ね返す
+            case Ball::White:
+                if (ball->vy < 0) { // top
+                    ball->vy *= -1;
+                    ball->setPosition(x, barRect.getMaxY() + r);
+                }
+                else if (ball->vy > 0) { // bottom
+                    ball->vy *= -1;
+                    ball->setPosition(x, barRect.getMinY() - r);
+                }
+                break;
+
+            // 青いボールはバーがダメージを受ける
+            case Ball::Blue:
+                if (youSide) {
+                    this->_youBar->hit();
+                }
+                else {
+                    this->_rivalBar->hit();
+                }
+
+                // ボールを削除
+                ball->removeFromParent();
+                auto pos = std::find(this->_balls.begin(), this->_balls.end(), ball);
+                this->_balls.erase(pos);
+
+                return true;
+                break;
         }
     }
+
+    return false;
 }
 
 // ボールとブロックの衝突判定処理

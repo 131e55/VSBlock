@@ -14,9 +14,13 @@
 class Bar : public cocos2d::Sprite
 {
 public:
+    // バーが壊れているか
+    bool broken = false;
+
+    // bool youSide : 自分側のバーであるか
     static Bar* create(bool youSide);
 
-    // バーダメージの初期化
+    // バーのダメージの初期化
     void initialize();
 
     // プレイヤー用タッチイベントハンドラ
@@ -30,9 +34,20 @@ public:
     // プレイヤー, RIVAL共通の処理
     void touchMoved(cocos2d::Point p);
 
+    // バーへのダメージ
+    void hit();
+
 private:
-    cocos2d::Texture2D* _damageTextures[1];
+    // バーのテクスチャ数
+    const int _numTextures = 8;
+
+    // バーのテクスチャ
+    std::vector<cocos2d::Texture2D*> _textures;
+
+    // 現在のダメージ数
     int _currentDamage;
+
+    // タッチされた位置
     cocos2d::Point _touchBeganPoint;
 };
 #endif /* defined(__VSBlock__Bar__) */
