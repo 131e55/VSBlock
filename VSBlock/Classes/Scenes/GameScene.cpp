@@ -296,7 +296,7 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                     case Ball::White:
                         block->hit();
                         if (youSide) {
-                            this->_youLifeGauge->damaged();
+                            this->_youLifeGauge->decrease();
 
                             // 負け
                             if (this->_youLifeGauge->currentLife <= 0) {
@@ -304,7 +304,7 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                             }
                         }
                         else {
-                            this->_rivalLifeGauge->damaged();
+                            this->_rivalLifeGauge->decrease();
 
                             // 勝ち
                             if (this->_rivalLifeGauge->currentLife <= 0) {
@@ -315,13 +315,13 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
 
                     // 青いボールなら, ブロックの傷を直し, ライフゲージを増やす
                     case Ball::Blue:
-                        block->fix();
-
-                        if (youSide) {
-
-                        }
-                        else {
-
+                        if(block->fix()) {
+                            if (youSide) {
+                                this->_youLifeGauge->increase();
+                            }
+                            else {
+                                this->_rivalLifeGauge->increase();
+                            }
                         }
                         break;
                 }

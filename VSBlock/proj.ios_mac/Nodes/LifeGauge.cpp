@@ -12,10 +12,10 @@ USING_NS_CC;
 
 LifeGauge* LifeGauge::create(bool youSide)
 {
-    LifeGauge *layer = new LifeGauge();
-    if (layer && layer->init())
+    LifeGauge *gauge = new LifeGauge();
+    if (gauge && gauge->init())
     {
-        layer->autorelease();
+        gauge->autorelease();
 
         Size screenSize = Director::getInstance()->getVisibleSize();
         float space = 8;
@@ -31,24 +31,25 @@ LifeGauge* LifeGauge::create(bool youSide)
             else {
                 label->setPosition(width / 2 + space, screenSize.height - height / 2 - space);
             }
-            layer->addChild(label);
+            gauge->addChild(label);
         }
 
-        layer->_gauge = Sprite::create("LifeGauge.png");
+        gauge->_gauge = Sprite::create("LifeGauge.png");
         {
             float x = label->getPosition().x + label->getContentSize().width / 2 + space;
             float y = label->getPosition().y;
 
-            layer->_gauge->setPosition(x, y);
-            layer->_gauge->setAnchorPoint(Point(0, 0.5));
-            layer->addChild(layer->_gauge);
+            // 横に拡大してゲージを表現するため左端をオリジンにする
+            gauge->_gauge->setPosition(x, y);
+            gauge->_gauge->setAnchorPoint(Point(0, 0.5));
+            gauge->addChild(gauge->_gauge);
         }
 
-        layer->_gaugeMaxWidth = screenSize.width - layer->_gauge->getPosition().x - space;
+        gauge->_gaugeMaxWidth = screenSize.width - gauge->_gauge->getPosition().x - space;
 
-        return layer;
+        return gauge;
     }
-    CC_SAFE_DELETE(layer);
+    CC_SAFE_DELETE(gauge);
     return nullptr;
 }
 
@@ -59,9 +60,20 @@ void LifeGauge::initialize(float life)
     this->_gauge->setScaleX(this->_gaugeMaxWidth);
 }
 
-void LifeGauge::damaged()
+void LifeGauge::decrease()
 {
-    this->currentLife--;
-    auto per = this->currentLife / this->_maxLife;
-    this->_gauge->setScaleX(this->_gaugeMaxWidth * per);
+    if (this->currentLife > 0) {
+        this->currentLife --;
+        auto per = this->currentLife / this->_maxLife;
+        this->_gauge->setScaleX(this->_gaugeMaxWidth * per);
+    }
+}
+
+void LifeGauge::increase()
+{
+    if (this->currentLife < this->_maxLife) {
+        this->currentLife ++;
+        auto per = this->currentLife / this->_maxLife;
+        this->_gauge->setScaleX(this->_gaugeMaxWidth * per);
+    }
 }

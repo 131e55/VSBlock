@@ -47,11 +47,14 @@ void Block::hit()
     }
 }
 
-void Block::fix()
+bool Block::fix()
 {
     // 壊れたのはさすがに直さない
     if (!this->broken && this->_currentDamage > 0) {
         this->_currentDamage --;
         this->setTexture(this->_textures.at(this->_currentDamage));
+        return true;
     }
+
+    return false;
 }
