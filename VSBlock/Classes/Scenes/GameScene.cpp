@@ -142,8 +142,6 @@ void GameScene::_initialize()
     // バーを初期化
     this->_rivalBar->initialize();
     this->_rivalBar->setPosition(this->_screenSize.width / 2, this->_screenSize.height - 160);
-    // タッチ開始位置はバーの位置とする
-    this->_rivalBar->cpuTouchBegan(this->_rivalBar->getPosition());
 
     // ボールの出現数を初期化
     this->_numNextBalls = 5;
@@ -171,7 +169,7 @@ void GameScene::_start()
 
 void GameScene::_over(bool youWin)
 {
-    // ボールやバーは動いていいが衝突判定だけは止める
+    // メインループを止める
     this->unscheduleUpdate();
 
     // リザルトラベルを表示してタイトルへ戻る
@@ -198,10 +196,7 @@ void GameScene::_over(bool youWin)
     result->runAction(overAction);
 }
 
-
-/*
- * nextBallNumberの数になるまでボールを生成
- */
+// nextBallNumberの数になるまでボールを生成
 void GameScene::_newBalls()
 {
     auto num = this->_balls.size();
@@ -414,21 +409,28 @@ void GameScene::_rivalCPU()
 {
     /*
      * Rival の戦略
-     *  1. 視野内で, バーに一番近く, ブロックへ向かっているボールのx座標に注目する
+     *  1-1. 視野内で, バーに一番近く, ブロックへ向かっているボールのx座標に注目する
      *    2-1. 白いボールならその位置へ近づく
      *    2-2. 青いボールならその位置から遠ざかる
+     *  1-2. 視野内で, ブロックへ向かっているボールがなかったら中央へ向かう
      */
+
+    // タッチ開始位置はバーの位置とする
+    this->_rivalBar->cpuTouchBegan(this->_rivalBar->getPosition());
 
     // 視野を決めて、視野以外のボールに対しては走査しないようにする
     auto length = 128;
-    auto startY = this->_rivalBar->getPosition().y - this->_rivalBar->getContentSize().height / 2;
+    auto startY = this->_rivalBar->getPosition().y;
     auto endY = startY - length;
 
-    auto x = this->_rivalBar->getPosition().x;
+    auto x = this->_rivalBar->getBoundingBox().getMidX();
 
     // 初期値は最低に
     float nearestBallY = endY;
     float nearestBallX = this->_screenSize.width / 2;
+
+    // 対象のボールが見つかったか
+    bool found = false;
 
     // 対象のボールのタイプ
     int type;
@@ -446,45 +448,63 @@ void GameScene::_rivalCPU()
                 nearestBallY = ballY;
                 nearestBallX = ball->getPosition().x;
                 type = ball->type;
+                found = true;
             }
         }
     }
 
-    switch (type) {
-        // 白いボールなら目的地へ近づく
-        case Ball::White:
-        {
-            if (x > nearestBallX) {
-                x -= dragSpeed;
-                if (x < nearestBallX) {
-                    x = nearestBallX;
-                }
-            }
-            else if (x < nearestBallX) {
-                x += dragSpeed;
+    // 視野内で, ブロックへ向かっているボールがあれば
+    if (found) {
+        switch (type) {
+            // 白いボールなら目的地へ近づく
+            case Ball::White:
+            {
                 if (x > nearestBallX) {
-                    x = nearestBallX;
+                    x -= dragSpeed;
+                    if (x < nearestBallX) {
+                        x = nearestBallX;
+                    }
                 }
+                else if (x < nearestBallX) {
+                    x += dragSpeed;
+                    if (x > nearestBallX) {
+                        x = nearestBallX;
+                    }
+                }
+                break;
             }
-            break;
-        }
 
-        // 青いボールなら目的地から遠ざかる
-        case Ball::Blue:
-        {
-            if (x > nearestBallX) {
-                x += dragSpeed;
+            // 青いボールなら目的地から遠ざかる
+            case Ball::Blue:
+            {
+                if (x > nearestBallX) {
+                    x += dragSpeed;
+                }
+                else if (x < nearestBallX) {
+                    x -= dragSpeed;
+                }
+                break;
             }
-            else if (x < nearestBallX) {
-                x -= dragSpeed;
-            }
-            break;
-        }
 
-        default:
-            break;
+            default:
+                break;
+        }
     }
-
+    else {
+        auto centerX = this->_screenSize.width / 2;
+        if (x < centerX) {
+            x += dragSpeed;
+            if (x > centerX) {
+                x = centerX;
+            }
+        }
+        else {
+            x -= dragSpeed;
+            if (x < centerX) {
+                x = centerX;
+            }
+        }
+    }
     this->_rivalBar->cpuTouchMoved(Point(x, this->_rivalBar->getPosition().y));
 
 #ifdef __DEBUG_MODE__
