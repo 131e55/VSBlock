@@ -34,6 +34,11 @@ bool GameScene::init()
 
     this->_screenSize = Director::getInstance()->getVisibleSize();
 
+    // 背景画像を生成
+    auto background = Sprite::create("GameBackground.png");
+    background->setPosition(this->_screenSize.width / 2, this->_screenSize.height / 2);
+    this->addChild(background);
+
     // 自分側のライフゲージを生成
     this->_youLifeGauge = LifeGauge::create(true);
     this->addChild(this->_youLifeGauge);
@@ -75,8 +80,10 @@ bool GameScene::init()
     this->_start();
 
     // [デバッグ用] Rival が対象にしているボールへ付ける印
-    this->_lockon = Sprite::create("LockOn.png");
-    this->addChild(this->_lockon);
+#ifdef __DEBUG_MODE__
+        this->_lockon = Sprite::create("LockOn.png");
+        this->addChild(this->_lockon);
+#endif
 
     return true;
 }
@@ -426,8 +433,8 @@ void GameScene::_rivalCPU()
     // 対象のボールのタイプ
     int type;
 
-    // スピードを決めてその分だけ近づくようにする(1frameで目的地へ移動するのはあまりに不自然)
-    auto dragSpeed = 12;
+    // スピードを決めてその分だけ移動するようにする
+    auto dragSpeed = 16;
 
     // 全ボール走査
     for (auto &ball : this->_balls) {
@@ -442,9 +449,6 @@ void GameScene::_rivalCPU()
             }
         }
     }
-
-    // [デバッグ用] Rival が対象にしているボールへ付ける印
-    this->_lockon->setPosition(nearestBallX, nearestBallY);
 
     switch (type) {
         // 白いボールなら目的地へ近づく
@@ -482,6 +486,11 @@ void GameScene::_rivalCPU()
     }
 
     this->_rivalBar->cpuTouchMoved(Point(x, this->_rivalBar->getPosition().y));
+
+#ifdef __DEBUG_MODE__
+    // [デバッグ用] Rival が対象にしているボールへ付ける印
+    this->_lockon->setPosition(nearestBallX, nearestBallY);
+#endif
 }
 
 void GameScene::_transition()

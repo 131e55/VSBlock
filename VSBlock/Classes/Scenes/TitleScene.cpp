@@ -39,7 +39,7 @@ bool TitleScene::init()
     auto screenSize = Director::getInstance()->getVisibleSize();
 
     // Background
-    auto background = Sprite::create("TitleBG.png");
+    auto background = Sprite::create("TitleBackground.png");
     background->setPosition(screenSize.width / 2, screenSize.height / 2);
     this->addChild(background);
 

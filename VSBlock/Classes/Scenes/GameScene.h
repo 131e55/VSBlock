@@ -11,6 +11,8 @@
 #include "Bar.h"
 #include "Ball.h"
 
+//#define __DEBUG_MODE__
+
 class GameScene : public cocos2d::Layer
 {
 public:
@@ -80,8 +82,10 @@ private:
     // シーン遷移
     void _transition();
 
+#ifdef __DEBUG_MODE__
     // [デバッグ用] Rival が対象にしているボールへ付ける印
     cocos2d::Sprite* _lockon;
+#endif
 };
 
 #endif /* defined(__GAME_SCENE_H__) */
