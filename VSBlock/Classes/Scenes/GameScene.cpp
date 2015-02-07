@@ -257,6 +257,7 @@ bool GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
         switch (ball->type) {
             // 白いボールは跳ね返す
             case Ball::White:
+            {
                 if (ball->vy < 0) { // top
                     ball->vy *= -1;
                     ball->setPosition(x, barRect.getMaxY() + r);
@@ -265,10 +266,12 @@ bool GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
                     ball->vy *= -1;
                     ball->setPosition(x, barRect.getMinY() - r);
                 }
-                break;
+               break;
+            }
 
             // 青いボールはバーがダメージを受ける
             case Ball::Blue:
+            {
                 if (youSide) {
                     this->_youBar->hit();
                 }
@@ -282,6 +285,10 @@ bool GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
                 this->_balls.erase(pos);
 
                 return true;
+                break;
+            }
+
+            default:
                 break;
         }
     }
@@ -301,6 +308,7 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                 switch (ball->type) {
                     // 白いボールなら, ブロックに傷を入れ, ライフゲージを減らす
                     case Ball::White:
+                    {
                         block->hit();
                         if (youSide) {
                             this->_youLifeGauge->decrease();
@@ -319,9 +327,11 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                             }
                         }
                         break;
+                    }
 
                     // 青いボールなら, ブロックの傷を直し, ライフゲージを増やす
                     case Ball::Blue:
+                    {
                         if(block->fix()) {
                             if (youSide) {
                                 this->_youLifeGauge->increase();
@@ -331,8 +341,11 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                             }
                         }
                         break;
-                }
+                    }
 
+                    default:
+                        break;
+                }
 
                 // ボールを削除
                 ball->removeFromParent();
@@ -380,42 +393,78 @@ void GameScene::_detectCollisionWalls(Ball *ball)
 
 void GameScene::_rivalCPU()
 {
-    //
-    // ポリシー：バーに一番近いボールのx座標へバーを移動させる
-    //
+    /*
+     * ポリシー
+     *    1. バーに一番近いボールのx座標を目的地にする
+     *    2. 白いボールなら目的地へ近づく
+     *    3. 青いボールなら目的地から遠ざかる
+     */
 
-    // 視野の境界
-    auto startY = this->_rivalBar->getPosition().y - this->_rivalBar->getContentSize().height / 2 - 64;
-    auto endY = this->_rivalBar->getPosition().y - this->_rivalBar->getContentSize().height / 2;
-    float nearestBallY = startY;
+    // 視野を決めて、視野以外のボールに対しては走査しないようにする
+    auto length = 128;
+    auto startY = this->_rivalBar->getPosition().y - this->_rivalBar->getContentSize().height / 2;
+    auto endY = startY - length;
+
+    auto x = this->_rivalBar->getPosition().x;
+
+    // 初期値は最低に
+    float nearestBallY = endY;
     float nearestBallX = this->_screenSize.width / 2;
 
+    // 対象のボールのタイプ
+    int type;
+
+    // スピードを決めてその分だけ近づくようにする(1frameで目的地へ移動するのはあまりに不自然)
+    auto dragSpeed = 12;
+
+    // 全ボール走査
     for (auto &ball : this->_balls) {
         // 視野に入っているボールの中から一番近いものを探す
         auto ballY = ball->getPosition().y;
-        if (startY <= ballY && ballY < endY) {
+        if (startY > ballY && ballY >= endY) {
             if (ballY > nearestBallY) {
                 nearestBallY = ballY;
                 nearestBallX = ball->getPosition().x;
+                type = ball->type;
             }
         }
     }
 
-    // スピードを決めてその分だけ近づくようにする
-    auto dragSpeed = 12;
-    auto x = this->_rivalBar->getPosition().x;
-    if (x > nearestBallX) {
-        x -= dragSpeed;
-        if (x < nearestBallX) {
-            x = nearestBallX;
+    switch (type) {
+        // 白いボールなら目的地へ近づく
+        case Ball::White:
+        {
+            if (x > nearestBallX) {
+                x -= dragSpeed;
+                if (x < nearestBallX) {
+                    x = nearestBallX;
+                }
+            }
+            else if (x < nearestBallX) {
+                x += dragSpeed;
+                if (x > nearestBallX) {
+                    x = nearestBallX;
+                }
+            }
+            break;
         }
-    }
-    else if (x < nearestBallX) {
-        x += dragSpeed;
-        if (x > nearestBallX) {
-            x = nearestBallX;
+
+        // 青いボールなら目的地から遠ざかる
+        case Ball::Blue:
+        {
+            if (x > nearestBallX) {
+                x += dragSpeed;
+            }
+            else if (x < nearestBallX) {
+                x -= dragSpeed;
+            }
+            break;
         }
+
+        default:
+            break;
     }
+
     this->_rivalBar->cpuTouchMoved(Point(x, this->_rivalBar->getPosition().y));
 }
 
