@@ -13,14 +13,15 @@ USING_NS_CC;
 Bar* Bar::create(bool youSide)
 {
     Bar *bar = new Bar();
-    if (bar && bar->initWithFile("Bar_0.png"))
-    {
+
+    if (bar && bar->initWithFile("Bar_0.png")) {
         bar->autorelease();
 
         // テクスチャを読み込む
         for (int i = 0; i < bar->_numTextures; i ++) {
             auto texture = Director::getInstance()->getTextureCache()->addImage(
-                "Bar_" + std::to_string(i) + ".png");
+                "Bar_" + std::to_string(i) + ".png"
+            );
             bar->_textures.push_back(texture);
         }
 
@@ -34,6 +35,7 @@ Bar* Bar::create(bool youSide)
 
         return bar;
     }
+
     CC_SAFE_DELETE(bar);
     return nullptr;
 }

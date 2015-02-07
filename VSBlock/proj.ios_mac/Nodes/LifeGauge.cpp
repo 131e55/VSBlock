@@ -13,8 +13,8 @@ USING_NS_CC;
 LifeGauge* LifeGauge::create(bool youSide)
 {
     LifeGauge *gauge = new LifeGauge();
-    if (gauge && gauge->init())
-    {
+
+    if (gauge && gauge->init()) {
         gauge->autorelease();
 
         Size screenSize = Director::getInstance()->getVisibleSize();
@@ -49,6 +49,7 @@ LifeGauge* LifeGauge::create(bool youSide)
 
         return gauge;
     }
+
     CC_SAFE_DELETE(gauge);
     return nullptr;
 }

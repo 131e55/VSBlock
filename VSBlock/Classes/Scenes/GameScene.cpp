@@ -135,7 +135,7 @@ void GameScene::_initialize()
     this->_rivalBar->cpuTouchBegan(this->_rivalBar->getPosition());
 
     // ボールの出現数を初期化
-    this->_nextBallNumber = 5;
+    this->_numNextBalls = 5;
 }
 
 void GameScene::_start()
@@ -143,13 +143,13 @@ void GameScene::_start()
     // READY? ラベルをアニメーション表示させた後, ゲームスタート
     auto moveto = EaseBounceOut::create(MoveTo::create(
         1.0f,
-        Point(this->_screenSize.width / 2, this->_screenSize.height / 2))
-    );
+        Point(this->_screenSize.width / 2, this->_screenSize.height / 2)
+    ));
     auto fadeto = FadeTo::create(0.5f, 0);
     auto startAction = Sequence::create(
         moveto,
         fadeto,
-        CallFunc::create([this](){
+        CallFunc::create([this]() {
             this->_newBalls();
             this->scheduleUpdate();
         }),
@@ -173,13 +173,13 @@ void GameScene::_over(bool youWin)
 
     auto moveto = EaseBounceOut::create(MoveTo::create(
         1.0f,
-        Point(this->_screenSize.width / 2, this->_screenSize.height / 2))
-    );
+        Point(this->_screenSize.width / 2, this->_screenSize.height / 2)
+    ));
     auto fadeto = FadeTo::create(2.0f, 0);
     auto overAction = Sequence::create(
         moveto,
         fadeto,
-        CallFunc::create([this](){
+        CallFunc::create([this]() {
             this->_transition();
         }),
         NULL
@@ -194,7 +194,7 @@ void GameScene::_over(bool youWin)
 void GameScene::_newBalls()
 {
     auto num = this->_balls.size();
-    for (int i = 0; i < this->_nextBallNumber - (int)num; i ++) {
+    for (int i = 0; i < this->_numNextBalls - (int)num; i ++) {
         auto ball = Ball::create();
         ball->setPosition(this->_screenSize.width / 2, this->_screenSize.height / 2);
         this->addChild(ball);
@@ -203,7 +203,7 @@ void GameScene::_newBalls()
 }
 
 void GameScene::update(float frame) {
-    // 全ボールの衝突判定
+    // 全ボールの移動と衝突判定
     for (auto &ball : this->_balls) {
         // YOU Side
         if (ball->getPosition().y < this->_screenSize.height / 2) {
@@ -233,6 +233,12 @@ void GameScene::update(float frame) {
                 break;
             }
         }
+
+        // 壁との衝突判定
+        this->_detectCollisionWalls(ball);
+
+        // ボールの移動
+        ball->move();
     }
 
     // Rival CPU
@@ -284,6 +290,7 @@ bool GameScene::_detectCollisionBallAndBar(Ball *ball, bool youSide)
 }
 
 // ボールとブロックの衝突判定処理
+// 戻り値: ボールとバーが衝突したかどうか
 bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
 {
     for (auto &block : (youSide ? this->_youBlocks : this->_rivalBlocks)) {
@@ -333,9 +340,9 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                 this->_balls.erase(pos);
 
                 // ボール出現数を増やしボールを生成
-                this->_nextBallNumber++;
-                if (this->_nextBallNumber > 50) {
-                    this->_nextBallNumber = 50;
+                this->_numNextBalls++;
+                if (this->_numNextBalls > 50) {
+                    this->_numNextBalls = 50;
                 }
                 this->_newBalls();
 
@@ -344,6 +351,31 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
         }
     }
     return false;
+}
+
+// ボールと壁との衝突判定
+void GameScene::_detectCollisionWalls(Ball *ball)
+{
+    auto x = ball->getPosition().x;
+    auto y = ball->getPosition().y;
+    auto r = ball->getContentSize().width / 2;
+
+    if (x - r <= 0) { // left
+        ball->setPosition(r, ball->getPosition().y);
+        ball->vx *= -1;
+    }
+    else if (x + r >= this->_screenSize.width) { // right
+        ball->setPosition(this->_screenSize.width - r, ball->getPosition().y);
+        ball->vx *= -1;
+    }
+    else if (y - r <= 0) { // bottom
+        ball->setPosition(ball->getPosition().x, r);
+        ball->vy *= -1;
+    }
+    else if(y + r >= this->_screenSize.height) { // top
+        ball->setPosition(ball->getPosition().x, this->_screenSize.height - r);
+        ball->vy *= -1;
+    }
 }
 
 void GameScene::_rivalCPU()

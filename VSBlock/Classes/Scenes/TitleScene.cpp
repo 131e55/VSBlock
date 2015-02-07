@@ -48,7 +48,7 @@ bool TitleScene::init()
     title->setPosition(screenSize.width / 2, screenSize.height / 2);
     this->addChild(title);
 
-    // Start
+    // Start はフェードイン・フェードアウトを繰り返す
     auto start = Sprite::create("Start.png");
     start->setPosition(screenSize.width / 2, screenSize.height / 2 - start->getContentSize().height * 2);
     auto fadeOut = FadeOut::create(0.5f);

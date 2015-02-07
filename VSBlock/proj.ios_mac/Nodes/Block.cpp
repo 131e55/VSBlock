@@ -13,18 +13,21 @@ USING_NS_CC;
 Block* Block::create()
 {
     Block *block = new Block();
+
     if (block && block->initWithFile("Block_0.png")) {
         block->autorelease();
 
         // テクスチャを読み込む
         for (int i = 0; i < block->numTextures; i ++) {
             auto texture = Director::getInstance()->getTextureCache()->addImage(
-                "Block_" + std::to_string(i) + ".png");
+                "Block_" + std::to_string(i) + ".png"
+            );
             block->_textures.push_back(texture);
         }
 
         return block;
     }
+
     CC_SAFE_DELETE(block);
     return nullptr;
 }

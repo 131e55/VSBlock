@@ -47,7 +47,9 @@ private:
 
     // ボール
     std::vector<Ball*> _balls;
-    int _nextBallNumber;
+
+    // 次に出現させるボール数
+    int _numNextBalls;
 
     // ゲームの初期化
     void _initialize();
@@ -66,7 +68,11 @@ private:
     bool _detectCollisionBallAndBar(Ball *ball, bool youSide);
 
     // ボールとブロックとの衝突判定
+    // 戻り値: ボールとブロックが衝突したかどうか
     bool _detectCollisionBallAndBlocks(Ball *ball, bool youSide);
+
+    // ボールと壁との衝突判定
+    void _detectCollisionWalls(Ball *ball);
 
     // Rival CPU
     void _rivalCPU();
