@@ -313,6 +313,7 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                         if (this->_numNextBalls > 50) {
                             this->_numNextBalls = 50;
                         }
+
                         break;
                     }
 
@@ -333,10 +334,11 @@ bool GameScene::_detectCollisionBallAndBlocks(Ball *ball, bool youSide)
                         }
 
                         // ボール出現数を減らす
-                        this->_numNextBalls -= 5;
+                        this->_numNextBalls -= 3;
                         if (this->_numNextBalls < 5) {
                             this->_numNextBalls = 5;
                         }
+
                         break;
                     }
 
@@ -415,7 +417,7 @@ void GameScene::_rivalCPU()
     int type;
 
     // スピードを決めてその分だけ移動するようにする
-    auto dragSpeed = 16;
+    auto dragSpeed = 10;
 
     // 全ボール走査
     for (auto &ball : this->_balls) {
