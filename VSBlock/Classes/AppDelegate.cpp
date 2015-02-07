@@ -27,7 +27,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("VSBlock Version 0.2");
+        glview = GLViewImpl::create("VSBlock Version 0.3");
         director->setOpenGLView(glview);
     }
 
