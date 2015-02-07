@@ -36,8 +36,8 @@ Ball* Ball::create()
 void Ball::_setVelocity()
 {
     // 移動方向と速度はランダム
-    this->vx = (rand() % 400 + 75) / 100.0;
-    this->vy = (rand() % 400 + 75) / 100.0;
+    this->vx = (rand() % 350 + 75) / 100.0;
+    this->vy = (rand() % 350 + 75) / 100.0;
     if (rand() % 2 == 0) {
         this->vx *= -1;
     }

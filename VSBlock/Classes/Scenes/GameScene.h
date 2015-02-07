@@ -66,8 +66,7 @@ private:
     void _newBalls();
 
     // ボールとバーとの衝突判定
-    // 戻り値: 青いボールとバーが衝突したかどうか
-    bool _detectCollisionBallAndBar(Ball *ball, bool youSide);
+    void _detectCollisionBallAndBar(Ball *ball, bool youSide);
 
     // ボールとブロックとの衝突判定
     // 戻り値: ボールとブロックが衝突したかどうか
