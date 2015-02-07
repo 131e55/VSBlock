@@ -41,7 +41,7 @@ Bar* Bar::create(bool youSide)
 void Bar::initialize()
 {
     this->_currentDamage = 0;
-    this->setTexture(this->_textures[0]);
+    this->setTexture(this->_textures.at(0));
 }
 
 bool Bar::onTouchBegan(Touch *touch, Event *event)

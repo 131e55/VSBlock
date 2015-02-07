@@ -34,7 +34,7 @@ public:
     // プレイヤー, RIVAL共通の処理
     void touchMoved(cocos2d::Point p);
 
-    // バーへのダメージ
+    // バーへダメージを与える
     void hit();
 
 private:
